@@ -113,3 +113,70 @@ Quando o usuário pedir skill nova:
 4. Se a skill precisar de arquivos de apoio (templates, exemplos),
    criar dentro da pasta da skill
 5. Seguir o fluxo da skill-creator nativa do Claude Code
+
+---
+
+# Romano & Bettini — perfil freelancer
+
+## O que é esse workspace
+
+Operação da Romano & Bettini. Aqui ficam os clientes, propostas, entregas e o
+material da própria marca.
+
+**Estrutura de pastas:**
+- `_memoria/` — quem sou, como falo, foco atual
+- `identidade/` — marca aplicada nas entregas *(vazia por enquanto)*
+- `clientes/` — uma subpasta por cliente, autossuficiente
+- `propostas/` — propostas em rascunho ou enviadas
+- `marketing/` — conteúdo próprio (site, portfolio, redes)
+- `saidas/` — emails e documentos pontuais
+- `dados/` — arquivos a analisar
+- `tarefas.md` — pipeline, prazos, próximos passos
+
+## Quem sou
+
+Daniel Romano, desenvolvedor, operando solo sob a marca **Romano & Bettini**
+*(nome escolhido, ainda não formalizado)*.
+
+Atendo empresas pequenas e médias que não têm site, ou cujo site está defasado.
+Entrego o que o cliente precisa — normalmente sites, apps e CRMs. O escopo se
+molda à necessidade; não vendo catálogo fechado.
+
+## Meu serviço
+
+- Sites
+- Apps
+- CRMs
+- Desenvolvimento sob demanda em geral
+
+Ticket médio: *(não definido — a precificação é um gargalo ativo, ver `_memoria/estrategia.md`)*
+Capacidade simultânea: *(a definir)*
+
+## Clientes ativos
+
+*(nenhum registrado ainda — o `/atualizar` sincroniza isso com as pastas em `clientes/`)*
+
+## Tom de voz
+
+Cordial e direto. Educado sem ser empolado, simpático sem puxar saco.
+
+**Evitar:** falsas promessas, simpatia extrema, e o formalismo cartorial
+("venho por meio deste", "atenciosamente"). Detalhe em `_memoria/preferencias.md`
+— inclusive o exemplo de escrita que serve de contra-referência.
+
+## Regras do sistema
+
+- Cliente novo → criar pasta `clientes/<Nome>/` com `briefing.md`
+- Proposta ainda não fechada → `propostas/`
+- Proposta de cliente fechado → `clientes/<Nome>/proposta.html`
+- Identidade visual está em branco: antes de gerar qualquer visual, avisar que
+  `identidade/design-guide.md` não foi preenchido, em vez de inventar cores e fontes
+
+## Ferramentas conectadas
+
+- [ ] Notion
+- [ ] Gmail
+- [ ] Google Calendar
+- [ ] Stripe / cobrança
+
+*(Marcar conforme for instalando os MCPs)*

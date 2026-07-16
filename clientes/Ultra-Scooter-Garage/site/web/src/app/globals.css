@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/*
+  Identidade da Ultra Scooter Garage.
+  Referência completa: clientes/Ultra-Scooter-Garage/identidade/design-guide.md
+
+  Barra do topo preta, fundos em charcoal/cinza neutro. O creme do logo e o verde
+  do WhatsApp (cor funcional) fazem o contraste por cima.
+*/
+@theme {
+  /* Barra do topo: preta. */
+  --color-preto: #0a0a0a;
+
+  /* Vermelho do logo (amostrado do arquivo). Uso pontual: a linha da marca sob a
+     barra preta — igual à faixa vermelha da fachada da loja. Não vira cor de
+     botão nem de texto; o CTA continua sendo o verde do WhatsApp. */
+  --color-vermelho: #dd132f;
+
+  /* Escada de contraste em cinza/charcoal neutro. As faixas do site alternam
+     entre esses tons pra ter ritmo; o creme do logo e o verde do WhatsApp fazem
+     o contraste quente por cima. (Nomes seguem "cafe-*" por herança do código.) */
+  --color-cafe-fundo: #161616; /* faixa mais escura (estoque) */
+  --color-cafe: #202020; /* fundo padrão das seções */
+  --color-cafe-claro: #2c2c2c; /* faixas claras (motivos, rodapé), cards */
+  --color-cafe-borda: #3d3d3d; /* divisórias */
+
+  /* Creme do logo */
+  --color-creme: #fbf8f4;
+
+  --color-zap: #25d366;
+
+  --font-serif: var(--fonte-titulo), ui-serif, Georgia, serif;
+  --font-sans: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply antialiased;
+}
+
+/*
+  Ecoa o wordmark: caixa alta, serifada, bem espaçada.
+  Só pros lugares que citam o logo — caixa alta em parágrafo é ilegível.
+*/
+.wordmark {
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/*
+  Profundidade no hero: um brilho quente e sutil no topo, pra a maior área lisa
+  da página não ler como um bloco chapado de uma cor só.
+*/
+.hero-glow {
+  background:
+    radial-gradient(130% 90% at 12% -10%, rgba(251, 248, 244, 0.06), transparent 55%),
+    var(--color-cafe);
+}
