@@ -4,6 +4,10 @@
 
 ## Agora
 
+- [ ] **Wave Sound** — site novo (cliente fechado, em execução) — `clientes/Wave-Sound/`
+  - [ ] Perguntar: o que incomoda no atual? preços valem? como fecham hoje? fotos reais? prazo/orçamento?
+  - [ ] Mover o logo (Downloads: Logotipo_wave.snd.pdf, wave.snd-2.png) pra identidade/
+
 - [ ] **Ultra Scooter Garage** — site + painel de estoque (cliente fechado, em execução)
   - [x] Scaffold do site + painel admin (`clientes/Ultra-Scooter-Garage/site/web/`)
   - [x] Identidade aplicada — marrom + creme, serifada (`identidade/design-guide.md`)
