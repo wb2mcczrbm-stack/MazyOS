@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createPublicClient, fotoUrl } from "@/lib/supabase/publico";
@@ -130,17 +131,27 @@ export default async function FichaPage({
             </>
           )}
 
-          {/* O CTA do site inteiro. A mensagem vai PRÉ-PREENCHIDA com a moto — sem
-              isso o vendedor recebe "oi" e não sabe de qual moto o cliente fala. */}
-          <a
-            href={linkMoto(moto)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-zap px-6 py-4 text-base font-semibold text-white transition hover:brightness-110"
-          >
-            <IconeWhatsApp className="h-5 w-5" />
-            {vendida ? "Ver scooters parecidas" : "Falar com a loja no WhatsApp"}
-          </a>
+          {/* O CTA do site inteiro. Disponível → WhatsApp com a mensagem já
+              preenchida. Vendida → leva pro estoque: quem clica em "parecidas"
+              quer ver scooters, não abrir uma conversa. */}
+          {vendida ? (
+            <Link
+              href="/motos"
+              className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-creme px-6 py-4 text-base font-semibold text-cafe transition hover:brightness-95"
+            >
+              Ver scooters parecidas
+            </Link>
+          ) : (
+            <a
+              href={linkMoto(moto)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-zap px-6 py-4 text-base font-semibold text-white transition hover:brightness-110"
+            >
+              <IconeWhatsApp className="h-5 w-5" />
+              Falar com a loja no WhatsApp
+            </a>
+          )}
 
           <dl className="mt-10 divide-y divide-cafe-borda border-y border-cafe-borda">
             {specs.map(([k, v]) => (

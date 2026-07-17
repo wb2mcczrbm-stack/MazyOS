@@ -45,11 +45,14 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
               width={220}
               height={64}
               priority
-              className="h-10 w-auto sm:h-12"
+              className="h-8 w-auto sm:h-12"
             />
           </Link>
 
-          <nav className="flex items-center gap-5 text-sm sm:gap-7">
+          {/* No mobile o espaço é curto: "Vender a minha" vira "Vender" e os gaps
+              encolhem — senão o nav estoura a viewport e a página inteira ganha
+              scroll lateral. */}
+          <nav className="flex items-center gap-4 text-sm sm:gap-7">
             <Link href="/motos" className="text-creme/70 transition hover:text-creme">
               Estoque
             </Link>
@@ -57,7 +60,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
               href="/vender-minha-moto"
               className="text-creme/70 transition hover:text-creme"
             >
-              Vender a minha
+              Vender<span className="hidden sm:inline"> a minha</span>
             </Link>
             <a
               href={LOJA.instagram}
@@ -82,6 +85,18 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </header>
 
       <main className="flex-1">{children}</main>
+
+      {/* WhatsApp sempre a um toque no celular. Só no mobile — no desktop o
+          botão do header já está sempre visível. */}
+      <a
+        href={linkGeral()}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Falar com a loja no WhatsApp"
+        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-zap text-white shadow-lg shadow-black/40 transition hover:brightness-110 sm:hidden"
+      >
+        <IconeWhatsApp className="h-7 w-7" />
+      </a>
 
       <footer className="border-t border-cafe-borda bg-cafe-claro">
         <div className="mx-auto max-w-6xl px-4 py-12">

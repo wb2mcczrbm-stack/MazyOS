@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { LOJA, pracaFrase } from "@/lib/loja";
 import "./globals.css";
 
@@ -30,7 +31,14 @@ export const metadata: Metadata = {
   description:
     `Scooters usadas com procedência ${pracaFrase()}, ${LOJA.cidade}. ` +
     "Estoque atualizado, fotos reais, atendimento direto no WhatsApp.",
-  openGraph: { type: "website", locale: "pt_BR", siteName: LOJA.nome },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: LOJA.nome,
+    // Capa dos links compartilhados (WhatsApp, Instagram DM): a fachada com o
+    // letreiro. Sem isso o link chega "pelado" no grupo — com isso, vira anúncio.
+    images: [{ url: "/fachada-esquina4.jpg", width: 2000, height: 1500 }],
+  },
 };
 
 /**
@@ -43,7 +51,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${titulo.variable} ${corpo.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        {/* Vercel Web Analytics: visitas e origens, sem cookie. Ativa de vez no
+            painel da Vercel (aba Analytics → Enable). */}
+        <Analytics />
+      </body>
     </html>
   );
 }
