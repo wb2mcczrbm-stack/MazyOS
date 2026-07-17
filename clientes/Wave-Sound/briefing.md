@@ -73,3 +73,21 @@ o resto do visual se resolve com direção de arte, não com evento inventado.
 ## Entregas previstas
 
 - Site novo (institucional + pacotes + portfólio + captação de orçamento)
+
+## Status da construção (17/07/2026)
+
+- **Site construído e publicado (preview):** https://wave-sound-nu.vercel.app
+  - Atenção: `wave-sound.vercel.app` (nome curto) é de OUTRA pessoa — o nosso é
+    `wave-sound-nu.vercel.app`.
+- **Stack:** Next.js 15, página única, **sem Supabase** (institucional, sem estoque).
+  Código em `site/web/`. Deploy: `cd site/web && vercel --prod --token <token>`.
+- Projeto Vercel `wave-sound` (team ultra-scooter-garage). Env `NEXT_PUBLIC_SITE_URL`.
+- **Fotos:** ainda não recebidas. Portfólio é o @wave.snd por ora. Quando vierem:
+  `public/trabalho/` + listar em `src/components/Trabalho.tsx` → galeria liga sozinha.
+- **Domínio:** wavesnd.com.br é do Registro.br. Virada só depois do cliente aprovar.
+- **Agenda digital (Google Calendar, Nível A):** o CTA "Verificar minha data" abre
+  a seção "Verifique sua data" — mini-calendário que lê livre/ocupado da agenda do
+  Google (só leitura, nunca escreve) e joga a data escolhida no WhatsApp. Some a
+  duplicidade de reserva; a agenda da equipe vira a fonte única. Setup pendente do
+  cliente: ver `CONFIGURAR-GOOGLE-AGENDA.md` (3 env vars na Vercel). Sem elas, o
+  site mostra tudo livre e funciona igual.

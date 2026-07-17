@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+  Identidade da Wave Sound.
+  Referência: clientes/Wave-Sound/identidade/design-guide.md
+
+  Direção aprovada (v2): o mundo do próprio logo — vermelho sobre branco.
+  Claro, arejado, harmônico. Uma cor só de acento. Sem equalizador, sem
+  monoespaçada. A onda aparece uma vez, suave.
+*/
+@theme {
+  /* Vermelho da marca — amostrado do logo. ÚNICO acento: CTA, rótulos, destaque.
+     A disciplina de uma cor só é o que dá a coerência que o cliente pediu. */
+  --color-vermelho: #ea3323;
+  --color-vermelho-escuro: #c81e10; /* hover do botão */
+
+  --color-papel: #ffffff; /* fundo principal */
+  --color-nevoa: #f6f5f3; /* faixas suaves / superfícies */
+  --color-borda: #e8e6e2; /* divisórias */
+  --color-tinta: #1a1a1c; /* texto principal */
+  --color-cinza: #6b6b70; /* texto secundário */
+
+  /* Verde funcional do WhatsApp — só onde o ícone precisa dele. No botão de CTA
+     o ícone entra BRANCO sobre o vermelho da marca (regra do design-guide). */
+  --color-zap: #25d366;
+
+  --font-sans: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply antialiased;
+}
+
+/* Respeita quem pediu menos movimento — o design é quase estático de propósito. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/*
+  Carrossel do Instagram ("posts passando").
+  A trilha é duplicada no componente; a animação anda -50% pra emendar sem corte.
+  Pausa no hover (dá tempo de ler/clicar) e para de vez pra quem pediu menos
+  movimento — aí vira um carrossel de rolagem manual, não some conteúdo.
+*/
+/*
+  Reveal no scroll: começa levemente abaixo e transparente, sobe e aparece
+  quando entra na tela. Discreto (18px, .6s). O componente Reveal liga a classe
+  .reveal-on via IntersectionObserver.
+*/
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.reveal-on {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@keyframes desliza {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee-trilha {
+  display: flex;
+  width: max-content;
+  gap: 20px;
+  animation: desliza 42s linear infinite;
+}
+
+.marquee:hover .marquee-trilha {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-trilha {
+    animation: none;
+  }
+}

@@ -5,8 +5,28 @@
 ## Agora
 
 - [ ] **Wave Sound** — site novo (cliente fechado, em execução) — `clientes/Wave-Sound/`
-  - [ ] Perguntar: o que incomoda no atual? preços valem? como fecham hoje? fotos reais? prazo/orçamento?
-  - [ ] Mover o logo (Downloads: Logotipo_wave.snd.pdf, wave.snd-2.png) pra identidade/
+  - [x] Briefing + entrevista feitos; direção de design v2.1 aprovada (mockup)
+  - [x] Kit oficial do logo em `identidade/logo-kit/` (docs sensíveis do iCloud ficaram fora)
+  - [x] **Site construído** — Next.js 15, página única, SEM Supabase (é institucional) —
+        `clientes/Wave-Sound/site/web/`. Build limpo, ~108 kB, 100% estático
+  - [x] Assets gerados do kit vetorial: logo branco (rodapé), favicon, OG 1200x630
+  - [x] WhatsApp com msg pré-preenchida por pacote, SEO local, JSON-LD, analytics, mobile ok
+  - [x] **PREVIEW no ar:** https://wave-sound-nu.vercel.app (projeto `wave-sound` na Vercel)
+        — atenção: `wave-sound.vercel.app` é de OUTRA pessoa; o nosso é `wave-sound-nu`
+  - [x] Barra do topo no tom escuro (logo branco); animação de reveal no scroll
+  - [x] Carrossel do Instagram (mecanismo pronto, aguardando os posts — `Trabalho.tsx`)
+  - [x] **Agenda digital (Google Calendar, Nível A — só leitura livre/ocupado):**
+        seção "Verifique sua data" + `/api/disponibilidade` + `lib/google-calendar.ts`.
+        Funciona sem credencial (tudo livre); conectar via `CONFIGURAR-GOOGLE-AGENDA.md`
+  - [x] **Agenda conectada** via iCal secreto (método sem Google Cloud/cartão):
+        agenda "Wave Sound — Eventos" → env `GOOGLE_CALENDAR_ICS_URL` na Vercel.
+        API responde `configurado:true`. Eventos nessa agenda bloqueiam o dia no site.
+  - [ ] (futuro, Nível B) agendamento que escreve na agenda — só depois do A rodando
+  - [ ] **Revogar o token da Vercel** (`wave-deploy`/`vcp_...`) após confirmar o deploy
+  - [ ] Cliente aprovar o preview → então virar o domínio wavesnd.com.br (Registro.br)
+  - [ ] Fotos reais: quando chegarem, soltar em `public/trabalho/` e listar no `Trabalho.tsx`
+        (a galeria liga sozinha; hoje o portfólio é o @wave.snd)
+  - [ ] `git push` do projeto novo (rodar `/salvar`)
 
 - [ ] **Ultra Scooter Garage** — site + painel de estoque (cliente fechado, em execução)
   - [x] Scaffold do site + painel admin (`clientes/Ultra-Scooter-Garage/site/web/`)
