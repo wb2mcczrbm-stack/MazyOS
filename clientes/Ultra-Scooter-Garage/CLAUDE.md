@@ -18,6 +18,12 @@ Cliente novo — **fechado**, em execução.
 - Site público — catálogo, filtros, ficha da moto, galeria, CTA WhatsApp
 - Painel admin — login, CRUD de motos, upload multi-foto mobile-first
 - Importação inicial do estoque a partir de Webmotors/OLX
+- **Bot de WhatsApp** — chatbot que qualifica o lead (anúncio/orgânico → tipo →
+  pagamento → link do catálogo + handoff), com inbox de atendimento no mesmo
+  número. Substituto do ManyChat, roda em plano grátis (Cloud API + Supabase +
+  Vercel + IA da Claude). Código em `/manychat/whatsapp-auto` (raiz do workspace).
+  Construído e testado localmente; falta conectar a Meta e publicar. Ver
+  `RESUME.md` e `SETUP.md` de lá.
 
 ## Onde salvar o que
 
