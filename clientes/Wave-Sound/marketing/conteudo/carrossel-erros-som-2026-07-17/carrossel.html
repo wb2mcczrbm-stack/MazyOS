@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --vermelho:#EA3323; --tinta:#1A1A1C; --papel:#FFFFFF;
+    --nevoa:#F6F5F3; --borda:#E8E6E2; --cinza:#6B6B70;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Inter",sans-serif;-webkit-font-smoothing:antialiased}
+
+  .slide{
+    width:1080px;height:1350px;position:relative;overflow:hidden;
+    padding:90px;display:flex;flex-direction:column;
+  }
+  /* fundos */
+  .light{background:var(--papel);color:var(--tinta)}
+  .dark{background:var(--tinta);color:var(--papel)}
+  .red{background:var(--vermelho);color:#fff}
+
+  /* barra de marca (logo + contador) */
+  .top{display:flex;align-items:center;justify-content:space-between}
+  .top img{height:34px;width:auto;display:block}
+  .counter{font-size:15px;font-weight:600;letter-spacing:.18em}
+  .light .counter{color:var(--cinza)}
+  .dark .counter{color:rgba(255,255,255,.55)}
+
+  /* onda decorativa (só nos escuros) */
+  .curva{position:absolute;pointer-events:none;opacity:.13}
+
+  /* tipografia */
+  .eyebrow{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.28em;color:var(--vermelho)}
+  .dark .eyebrow{color:var(--vermelho)}
+  .num{font-size:300px;font-weight:800;line-height:.86;letter-spacing:-.04em;color:var(--vermelho)}
+  /* título dos slides de erro (aplica no <h2> dentro de .slide; CTA sobrescreve) */
+  .slide h2{font-size:70px;font-weight:800;line-height:1.04;letter-spacing:-.035em}
+  .stack p{font-size:30px;font-weight:500;line-height:1.5;max-width:30ch}
+  .light .stack p{color:#3a3a3d}
+  .dark .stack p{color:rgba(255,255,255,.78)}
+  .regua{width:74px;height:4px;background:var(--vermelho);border-radius:2px}
+  .handle{font-size:20px;font-weight:600}
+  .light .handle{color:var(--cinza)}
+  .dark .handle,.red .handle{color:rgba(255,255,255,.8)}
+
+  .fill{flex:1}
+  .stack>*+*{margin-top:26px}
+
+  /* CAPA */
+  .capa .kicker{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.3em;color:var(--vermelho)}
+  .capa h1{font-size:104px;font-weight:900;line-height:.98;letter-spacing:-.04em;max-width:15ch}
+  .capa .sub{font-size:30px;font-weight:500;line-height:1.45;color:rgba(255,255,255,.72);max-width:26ch}
+
+  /* CTA */
+  .cta{align-items:center;justify-content:center;text-align:center}
+  .cta .logo-c{height:56px;margin-bottom:56px}
+  .cta h2{font-size:76px;font-weight:900;line-height:1.02;letter-spacing:-.035em;max-width:16ch}
+  .cta .sub{font-size:30px;font-weight:500;margin-top:26px;color:rgba(255,255,255,.9);max-width:24ch}
+  .cta .foot{margin-top:52px;font-size:24px;font-weight:700;letter-spacing:.02em}
+</style>
+</head>
+<body>
+
+  <!-- SLIDE 1 — CAPA (escura) -->
+  <section class="slide dark capa">
+    <svg class="curva" viewBox="0 0 600 400" fill="none" style="right:-150px;top:120px;width:760px">
+      <path d="M40 320 C 140 80, 220 80, 300 320 S 460 560, 560 80" stroke="#EA3323" stroke-width="52" stroke-linecap="round"/>
+    </svg>
+    <div class="top">
+      <img src="./logo-branco.png" alt="wave.snd" />
+      <span class="counter">01 / 07</span>
+    </div>
+    <div class="fill"></div>
+    <div class="stack">
+      <span class="kicker">Sonorização de eventos</span>
+      <h1>5 erros que derrubam o som do evento</h1>
+      <p class="sub">E como a gente resolve na montagem — antes de você perceber.</p>
+    </div>
+    <div class="fill"></div>
+    <span class="handle" style="color:rgba(255,255,255,.8)">@wave.snd</span>
+  </section>
+
+  <!-- SLIDE 2 — ERRO 01 (clara) -->
+  <section class="slide light">
+    <div class="top">
+      <img src="./logo.png" alt="wave.snd" />
+      <span class="counter">02 / 07</span>
+    </div>
+    <div class="fill"></div>
+    <span class="eyebrow">Erro</span>
+    <div class="num">01</div>
+    <div class="stack" style="margin-top:20px">
+      <h2>Escolher o som<br>“no olho”</h2>
+      <div class="regua"></div>
+      <p>Potência a mais atordoa; a menos some no fundo do salão. Na montagem, a gente dimensiona pelo tamanho e formato do espaço e posiciona a caixa onde o som chega parelho — não só perto do palco.</p>
+    </div>
+    <div class="fill"></div>
+    <span class="handle">@wave.snd</span>
+  </section>
+
+  <!-- SLIDE 3 — ERRO 02 (escura) -->
+  <section class="slide dark">
+    <svg class="curva" viewBox="0 0 600 400" fill="none" style="left:-180px;bottom:-60px;width:640px">
+      <path d="M40 320 C 140 80, 220 80, 300 320 S 460 560, 560 80" stroke="#EA3323" stroke-width="52" stroke-linecap="round"/>
+    </svg>
+    <div class="top">
+      <img src="./logo-branco.png" alt="wave.snd" />
+      <span class="counter">03 / 07</span>
+    </div>
+    <div class="fill"></div>
+    <span class="eyebrow">Erro</span>
+    <div class="num">02</div>
+    <div class="stack" style="margin-top:20px">
+      <h2>Deixar o teste<br>pra última hora</h2>
+      <div class="regua"></div>
+      <p>Microfonia, chiado, volume torto: quase sempre é falta de passagem de som. A gente chega com folga e testa tudo antes — pra ninguém ouvir surpresa no meio do brinde.</p>
+    </div>
+    <div class="fill"></div>
+    <span class="handle">@wave.snd</span>
+  </section>
+
+  <!-- SLIDE 4 — ERRO 03 (clara) -->
+  <section class="slide light">
+    <div class="top">
+      <img src="./logo.png" alt="wave.snd" />
+      <span class="counter">04 / 07</span>
+    </div>
+    <div class="fill"></div>
+    <span class="eyebrow">Erro</span>
+    <div class="num">03</div>
+    <div class="stack" style="margin-top:20px">
+      <h2>Confiar na<br>playlist do celular</h2>
+      <div class="regua"></div>
+      <p>Bluetooth caindo, notificação no meio da música, bateria no fim. Levamos equipamento profissional e backup: se algo falha, já tem outro pronto antes de virar problema.</p>
+    </div>
+    <div class="fill"></div>
+    <span class="handle">@wave.snd</span>
+  </section>
+
+  <!-- SLIDE 5 — ERRO 04 (escura) -->
+  <section class="slide dark">
+    <svg class="curva" viewBox="0 0 600 400" fill="none" style="right:-160px;top:90px;width:700px">
+      <path d="M40 320 C 140 80, 220 80, 300 320 S 460 560, 560 80" stroke="#EA3323" stroke-width="52" stroke-linecap="round"/>
+    </svg>
+    <div class="top">
+      <img src="./logo-branco.png" alt="wave.snd" />
+      <span class="counter">05 / 07</span>
+    </div>
+    <div class="fill"></div>
+    <span class="eyebrow">Erro</span>
+    <div class="num">04</div>
+    <div class="stack" style="margin-top:20px">
+      <h2>Ignorar a parte<br>chata: a energia</h2>
+      <div class="regua"></div>
+      <p>Tomada sobrecarregada derruba tudo no melhor momento. Na montagem a gente organiza a energia e esconde o cabo — nada de fio atravessando a pista.</p>
+    </div>
+    <div class="fill"></div>
+    <span class="handle">@wave.snd</span>
+  </section>
+
+  <!-- SLIDE 6 — ERRO 05 (clara) -->
+  <section class="slide light">
+    <div class="top">
+      <img src="./logo.png" alt="wave.snd" />
+      <span class="counter">06 / 07</span>
+    </div>
+    <div class="fill"></div>
+    <span class="eyebrow">Erro</span>
+    <div class="num">05</div>
+    <div class="stack" style="margin-top:20px">
+      <h2>Ligar o som<br>e sumir</h2>
+      <div class="regua"></div>
+      <p>A cerimônia pede um volume, a festa pede outro. A gente fica no controle o evento inteiro, ajustando ao vivo — e com equipamento reserva pra qualquer imprevisto.</p>
+    </div>
+    <div class="fill"></div>
+    <span class="handle">@wave.snd</span>
+  </section>
+
+  <!-- SLIDE 7 — CTA (vermelha) -->
+  <section class="slide red cta">
+    <img class="logo-c" src="./logo-allwhite.png" alt="wave.snd" />
+    <h2>Seu som merece quem cuida dos bastidores.</h2>
+    <p class="sub">Verifique a data do seu evento direto no nosso site.</p>
+    <div class="foot">@wave.snd · WhatsApp</div>
+  </section>
+
+</body>
+</html>

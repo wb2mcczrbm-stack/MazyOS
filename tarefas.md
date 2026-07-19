@@ -23,7 +23,10 @@
         API responde `configurado:true`. Eventos nessa agenda bloqueiam o dia no site.
   - [ ] (futuro, Nível B) agendamento que escreve na agenda — só depois do A rodando
   - [ ] **Revogar o token da Vercel** (`wave-deploy`/`vcp_...`) após confirmar o deploy
-  - [ ] Cliente aprovar o preview → então virar o domínio wavesnd.com.br (Registro.br)
+  - [x] **Domínio próprio no ar:** https://wavesnd.com.br (Registro.br: A @ → 76.76.21.21,
+        CNAME www → cname.vercel-dns.com; HTTPS emitido; e-mail Google Workspace preservado —
+        MX/DKIM intactos). `NEXT_PUBLIC_SITE_URL` = https://wavesnd.com.br
+  - [ ] Na Vercel: deixar `wavesnd.com.br` (sem www) como principal — hoje o www é o principal
   - [ ] Fotos reais: quando chegarem, soltar em `public/trabalho/` e listar no `Trabalho.tsx`
         (a galeria liga sozinha; hoje o portfólio é o @wave.snd)
   - [ ] `git push` do projeto novo (rodar `/salvar`)
