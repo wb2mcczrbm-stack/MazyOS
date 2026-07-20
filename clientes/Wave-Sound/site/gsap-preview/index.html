@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wave Sound — preview GSAP (offline)</title>
+<style>
+  /* ============================================================
+     Identidade Wave Sound (v2 aprovada): vermelho sobre branco,
+     claro e arejado, uma cor só de acento.
+     Referência: clientes/Wave-Sound/identidade/design-guide.md
+     Este arquivo é um EXPERIMENTO de animação (GSAP), não a versão
+     final — o design aprovado é quase estático.
+     ============================================================ */
+  :root {
+    --vermelho: #ea3323;
+    --vermelho-escuro: #c81e10;
+    --papel: #ffffff;
+    --nevoa: #f6f5f3;
+    --borda: #e8e6e2;
+    --tinta: #1a1a1c;
+    --cinza: #6b6b70;
+    --max: 1060px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--tinta);
+    background: var(--papel);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+  .rotulo {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--vermelho); margin-bottom: 8px;
+  }
+  h2 { font-size: clamp(26px, 3.6vw, 36px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+  .sub { font-size: 17px; color: var(--cinza); max-width: 54ch; }
+
+  /* ---- Header ---- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(26,26,28,0.90); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    transition: padding .3s ease, background .3s ease;
+  }
+  header.compacto { background: rgba(26,26,28,0.97); }
+  .hbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: var(--max); margin: 0 auto; transition: padding .3s ease; }
+  header.compacto .hbar { padding-top: 10px; padding-bottom: 10px; }
+  .hlogo { height: 28px; width: auto; }
+  nav { display: none; gap: 32px; font-size: 15px; }
+  nav a { color: rgba(255,255,255,0.70); transition: color .2s; }
+  nav a:hover { color: #fff; }
+  @media (min-width: 860px) { nav { display: flex; align-items: center; } }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--vermelho); color: #fff; font-weight: 600;
+    border-radius: 10px; padding: 10px 16px; font-size: 15px;
+    transition: background .2s, transform .2s;
+  }
+  .btn:hover { background: var(--vermelho-escuro); }
+  .btn svg { width: 18px; height: 18px; }
+
+  /* ---- Hero ---- */
+  .hero { position: relative; overflow: hidden; }
+  .hero .onda {
+    position: absolute; right: -140px; top: 64px; width: 620px;
+    opacity: 0.10; pointer-events: none; display: none;
+  }
+  @media (min-width: 768px) { .hero .onda { display: block; } }
+  .hero-inner { max-width: var(--max); margin: 0 auto; padding: 96px 24px; }
+  .badge {
+    display: inline-block; border: 1px solid var(--borda);
+    border-radius: 999px; padding: 6px 14px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--cinza);
+  }
+  h1 {
+    margin-top: 24px; max-width: 17ch;
+    font-size: clamp(36px, 5.8vw, 62px); font-weight: 800;
+    line-height: 1.06; letter-spacing: -0.022em;
+  }
+  h1 .palavra { display: inline-block; }
+  h1 em { font-style: normal; color: var(--vermelho); }
+  .hero p.lead { margin-top: 24px; max-width: 50ch; font-size: 19px; color: var(--cinza); }
+  .preco-linha { margin-top: 12px; font-size: 14px; color: var(--cinza); }
+  .preco-linha b { color: var(--tinta); }
+  .hero-ctas { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn-grande { padding: 15px 28px; font-size: 16px; border-radius: 12px; }
+  .btn-linha {
+    display: inline-flex; align-items: center; border: 1px solid var(--borda);
+    padding: 15px 28px; border-radius: 12px; font-weight: 600; color: var(--tinta);
+    transition: border-color .2s;
+  }
+  .btn-linha:hover { border-color: var(--cinza); }
+
+  /* ---- Seções ---- */
+  section.bloco { padding: 80px 0; }
+  .nevoa { background: var(--nevoa); }
+
+  /* Pacotes */
+  .grid-pacotes { display: grid; gap: 20px; grid-template-columns: 1fr; margin-top: 40px; }
+  @media (min-width: 640px) { .grid-pacotes { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .grid-pacotes { grid-template-columns: repeat(4,1fr); } }
+  .card {
+    position: relative; display: flex; flex-direction: column;
+    background: var(--papel); border: 1px solid var(--borda);
+    border-radius: 16px; padding: 24px;
+  }
+  .card.destaque { border-color: var(--vermelho); box-shadow: 0 1px 0 var(--vermelho); }
+  .selo {
+    position: absolute; top: -12px; left: 24px; background: var(--vermelho);
+    color: #fff; font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; border-radius: 999px; padding: 4px 12px;
+  }
+  .card h3 { font-size: 18px; font-weight: 600; }
+  .card .linha { margin-top: 4px; font-size: 14px; color: var(--cinza); }
+  .card .apartir { display: block; margin-top: 24px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cinza); }
+  .card .valor { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+  .card .cta {
+    margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 600;
+    border: 1px solid var(--borda); color: var(--tinta); transition: border-color .2s, background .2s;
+  }
+  .card .cta.forte { background: var(--vermelho); color: #fff; border-color: var(--vermelho); }
+  .card .cta.forte:hover { background: var(--vermelho-escuro); }
+  .card .cta:not(.forte):hover { border-color: var(--cinza); }
+  .flex1 { flex: 1; }
+
+  /* Como funciona */
+  .grid-passos { display: grid; gap: 32px; grid-template-columns: 1fr; margin-top: 40px; }
+  @media (min-width: 768px) { .grid-passos { grid-template-columns: repeat(3,1fr); } }
+  .passo { border-top: 1px solid var(--borda); padding-top: 24px; }
+  .passo .num { font-size: 24px; font-weight: 800; color: var(--vermelho); }
+  .passo h3 { margin-top: 8px; font-size: 18px; font-weight: 600; }
+  .passo p { margin-top: 8px; font-size: 15px; color: var(--cinza); }
+
+  /* Agenda (estático, só ilustrativo) */
+  .agenda-grid { display: grid; gap: 32px; grid-template-columns: 1fr; margin-top: 40px; }
+  @media (min-width: 768px) { .agenda-grid { grid-template-columns: minmax(0,1fr) 300px; align-items: start; } }
+  .cal { background: var(--papel); border: 1px solid var(--borda); border-radius: 16px; padding: 24px; }
+  .cal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-weight: 600; font-size: 15px; }
+  .cal-nav { width: 36px; height: 36px; border: 1px solid var(--borda); border-radius: 8px; background: none; cursor: pointer; color: var(--tinta); }
+  .semana, .dias { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; text-align: center; }
+  .semana span { font-size: 12px; color: var(--cinza); font-weight: 500; margin-bottom: 8px; }
+  .dia { height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .15s; }
+  .dia.livre:hover { background: rgba(234,51,35,0.10); }
+  .dia.ocupado { color: var(--cinza); text-decoration: line-through; text-decoration-color: rgba(234,51,35,0.6); cursor: default; }
+  .dia.vazio { cursor: default; }
+  .dia.sel { background: var(--vermelho); color: #fff; }
+  .painel { background: var(--papel); border: 1px solid var(--borda); border-radius: 16px; padding: 24px; font-size: 15px; color: var(--cinza); }
+
+  /* Fechamento */
+  .fechamento { background: var(--vermelho); color: #fff; padding: 80px 0; text-align: center; }
+  .fechamento h2 { max-width: 22ch; margin: 0 auto; font-size: clamp(28px,4vw,42px); line-height: 1.15; }
+  .fechamento p { max-width: 46ch; margin: 16px auto 0; font-size: 17px; color: rgba(255,255,255,0.85); }
+  .btn-branco {
+    margin-top: 32px; display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: var(--vermelho); font-weight: 600;
+    padding: 16px 32px; border-radius: 12px; transition: transform .2s;
+  }
+  .btn-branco:hover { transform: scale(1.02); }
+
+  /* Rodapé */
+  footer { background: var(--tinta); color: #fff; padding: 56px 0 32px; }
+  .foot-grid { display: grid; gap: 40px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } }
+  footer p, footer li, footer a { color: rgba(255,255,255,0.60); font-size: 15px; }
+  footer h3 { color: #fff; font-weight: 600; margin-bottom: 12px; font-size: 15px; }
+  footer ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  footer a:hover { color: #fff; }
+  .redes { margin-top: 20px; display: flex; gap: 12px; }
+  .rede { width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  .rede:hover { background: rgba(255,255,255,0.20); }
+  .copyr { max-width: var(--max); margin: 48px auto 0; padding: 24px 24px 0; border-top: 1px solid rgba(255,255,255,0.10); font-size: 13px; color: rgba(255,255,255,0.40); }
+
+  /* aviso do preview */
+  .fita {
+    background: #111; color: #fff; text-align: center; font-size: 12.5px;
+    padding: 8px 16px; letter-spacing: 0.02em;
+  }
+  .fita b { color: #ff6a5c; }
+</style>
+</head>
+<body>
+
+<div class="fita">🧪 <b>Preview offline</b> — experimento de animação com GSAP. O design aprovado do Wave Sound é quase estático; isto é só pra comparar.</div>
+
+<!-- ===================== HEADER ===================== -->
+<header id="cabecalho">
+  <div class="hbar">
+    <a href="#topo" aria-label="Wave Sound"><img src="logo-branco.png" alt="Wave Sound" class="hlogo" /></a>
+    <nav>
+      <a href="#pacotes">Pacotes</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#trabalho">Nosso trabalho</a>
+    </nav>
+    <a href="#agenda" class="btn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.8-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.5zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg>
+      <span>Pedir orçamento</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="topo" class="hero">
+  <!-- Onda suave: eco do logo (3 curvas ~ W), decorativa. -->
+  <svg class="onda" id="onda" viewBox="0 0 620 260" fill="none" aria-hidden="true">
+    <path id="onda-path" d="M5 130 C 70 20, 130 20, 180 130 C 230 240, 290 240, 340 130 C 390 20, 450 20, 500 130 C 545 225, 590 225, 615 150"
+      stroke="#ea3323" stroke-width="10" stroke-linecap="round"/>
+  </svg>
+
+  <div class="hero-inner">
+    <span class="badge" data-hero>Sonorização de eventos · São Paulo</span>
+    <h1 data-hero-titulo>
+      <span class="palavra">O</span> <span class="palavra">som</span> <span class="palavra">do</span>
+      <span class="palavra">seu</span> <span class="palavra">evento,</span>
+      <span class="palavra"><em>do</em></span> <span class="palavra"><em>jeito</em></span>
+      <span class="palavra"><em>certo</em></span>.
+    </h1>
+    <p class="lead" data-hero>Sonorização para casamentos, shows e conferências — equipamento profissional, instalação e suporte no dia, do primeiro teste ao último acorde.</p>
+    <p class="preco-linha" data-hero>Pacotes <b>a partir de R$ 700</b></p>
+    <div class="hero-ctas">
+      <a href="#agenda" class="btn btn-grande" data-hero>Verificar minha data</a>
+      <a href="#pacotes" class="btn-linha" data-hero>Ver pacotes</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PACOTES ===================== -->
+<section id="pacotes" class="bloco nevoa" data-reveal>
+  <div class="wrap">
+    <p class="rotulo">Pacotes</p>
+    <h2>Um ponto de partida claro</h2>
+    <p class="sub" style="margin-top:12px;max-width:52ch">Cada evento é único — o valor final depende do local, da duração e da estrutura. Os pacotes são o começo da conversa; o ajuste fino a gente fecha no WhatsApp.</p>
+    <div class="grid-pacotes">
+      <div class="card" data-card>
+        <div class="flex1"><h3>Som Essencial</h3><p class="linha">Cerimônias e eventos íntimos.</p></div>
+        <div><span class="apartir">a partir de</span><span class="valor">R$ 700</span></div>
+        <a class="cta" href="#agenda">Verificar data</a>
+      </div>
+      <div class="card destaque" data-card>
+        <span class="selo">Mais pedido</span>
+        <div class="flex1"><h3>Som Profissional</h3><p class="linha">Festas e eventos corporativos.</p></div>
+        <div><span class="apartir">a partir de</span><span class="valor">R$ 1.300</span></div>
+        <a class="cta forte" href="#agenda">Verificar data</a>
+      </div>
+      <div class="card" data-card>
+        <div class="flex1"><h3>Som Premium</h3><p class="linha">Shows e palcos maiores.</p></div>
+        <div><span class="apartir">a partir de</span><span class="valor">R$ 2.500</span></div>
+        <a class="cta" href="#agenda">Verificar data</a>
+      </div>
+      <div class="card" data-card>
+        <div class="flex1"><h3>Experiência Completa</h3><p class="linha">Produção de ponta a ponta.</p></div>
+        <div><span class="apartir">a partir de</span><span class="valor">R$ 5.000</span></div>
+        <a class="cta" href="#agenda">Verificar data</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMO FUNCIONA ===================== -->
+<section id="como-funciona" class="bloco" data-reveal>
+  <div class="wrap">
+    <p class="rotulo">Como funciona</p>
+    <h2 style="max-width:20ch">Simples do primeiro contato ao fim do evento</h2>
+    <div class="grid-passos">
+      <div class="passo" data-passo><span class="num">01</span><h3>Você fala com a gente</h3><p>Manda a data, o local e o tipo de evento no WhatsApp. A gente entende o que o seu dia precisa antes de falarmos em valor.</p></div>
+      <div class="passo" data-passo><span class="num">02</span><h3>Montamos o orçamento</h3><p>Você recebe uma proposta clara — equipamento, equipe e estrutura certos pro seu evento, sem surpresa depois.</p></div>
+      <div class="passo" data-passo><span class="num">03</span><h3>O som acontece</h3><p>Chegamos antes, testamos tudo e ficamos de plantão do primeiro convidado ao último acorde. Você cuida da festa; o som é com a gente.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AGENDA (ilustrativa) ===================== -->
+<section id="agenda" class="bloco nevoa" data-reveal>
+  <div class="wrap">
+    <p class="rotulo">Verifique sua data</p>
+    <h2 style="max-width:22ch">Veja se o seu dia está livre</h2>
+    <p class="sub" style="margin-top:12px">Nossa agenda está aqui, em tempo real. Escolha a data do seu evento — se estiver livre, é só chamar no WhatsApp que a gente confirma na hora.</p>
+    <div class="agenda-grid">
+      <div class="cal">
+        <div class="cal-top"><button class="cal-nav">‹</button><span>Agosto de 2026</span><button class="cal-nav">›</button></div>
+        <div class="semana"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+        <div class="dias" id="dias"></div>
+      </div>
+      <div class="painel" id="painel">
+        <p style="font-weight:600;color:var(--tinta)">Escolha uma data</p>
+        <p style="margin-top:8px">Toque num dia livre no calendário pra seguir pro WhatsApp com a data já preenchida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRABALHO ===================== -->
+<section id="trabalho" class="bloco" data-reveal>
+  <div class="wrap">
+    <p class="rotulo">Nosso trabalho</p>
+    <h2 style="max-width:24ch">Cada evento vira um post</h2>
+    <p class="sub" style="margin-top:12px">A gente registra os eventos e publica no Instagram — é o nosso portfólio vivo.</p>
+    <a href="https://instagram.com/wave.snd" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:40px;border:1px solid var(--borda);border-radius:16px;padding:56px 24px;text-align:center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--vermelho)" stroke-width="2" style="width:36px;height:36px"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="var(--vermelho)" stroke="none"/></svg>
+      <span style="font-size:18px;font-weight:600;color:var(--tinta)">@wave.snd</span>
+      <span style="max-width:36ch;font-size:15px;color:var(--cinza)">Veja os últimos eventos, os bastidores e o equipamento no nosso Instagram.</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===================== FECHAMENTO ===================== -->
+<section class="fechamento" data-fechamento>
+  <div class="wrap">
+    <h2>Seu evento merece um som em que dá pra confiar</h2>
+    <p>Atendemos em São Paulo, capital e estado. Manda a data no WhatsApp e a gente verifica a disponibilidade — sem compromisso.</p>
+    <a href="#" class="btn-branco">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.8-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.5zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg>
+      Falar com a Wave Sound
+    </a>
+  </div>
+</section>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <img src="logo-branco.png" alt="Wave Sound" style="height:28px;width:auto" />
+      <p style="margin-top:16px;max-width:34ch;line-height:1.6">Sonorização profissional para casamentos, shows e conferências em São Paulo.</p>
+      <div class="redes">
+        <a href="#" class="rede" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="#fff" style="width:20px;height:20px"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.8-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.5zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg></a>
+        <a href="https://instagram.com/wave.snd" class="rede" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:20px;height:20px"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <h3>Contato</h3>
+      <ul>
+        <li><a href="#">(11) 99242-8118</a></li>
+        <li><a href="mailto:contato@wavesnd.com.br">contato@wavesnd.com.br</a></li>
+        <li><a href="https://instagram.com/wave.snd">@wave.snd</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Onde estamos</h3>
+      <a href="#">Rua Coronel Irineu Castro, 43<br/>Jd. Anália Franco<br/>São Paulo — SP<br/>03333-050</a>
+    </div>
+  </div>
+  <div class="copyr">© Wave Sound · Sonorização de eventos · São Paulo</div>
+</footer>
+
+<!-- GSAP local (offline) -->
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+<script>
+/* ============================================================
+   Animações — GSAP. Espírito "harmônico" da marca: entradas
+   suaves, sem drama. Respeita prefers-reduced-motion (aí não
+   anima nada e tudo já aparece visível por padrão).
+   ============================================================ */
+(function () {
+  var reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduzir || !window.gsap) return; // sem animação: conteúdo estático
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // --- Calendário ilustrativo (Agosto/2026 começa numa sexta) ---
+  (function calendario() {
+    var dias = document.getElementById("dias");
+    if (!dias) return;
+    var ocupadas = { 8: 1, 9: 1, 15: 1, 22: 1, 23: 1 };
+    var comeca = 5; // sexta
+    var total = 31;
+    var html = "";
+    for (var i = 0; i < comeca; i++) html += '<span class="dia vazio"></span>';
+    for (var d = 1; d <= total; d++) {
+      if (ocupadas[d]) html += '<span class="dia ocupado">' + d + "</span>";
+      else html += '<span class="dia livre" data-dia="' + d + '">' + d + "</span>";
+    }
+    dias.innerHTML = html;
+    var painel = document.getElementById("painel");
+    dias.querySelectorAll(".livre").forEach(function (el) {
+      el.addEventListener("click", function () {
+        dias.querySelectorAll(".sel").forEach(function (s) { s.classList.remove("sel"); });
+        el.classList.add("sel");
+        var dia = el.getAttribute("data-dia");
+        painel.innerHTML =
+          '<p style="font-size:14px;color:var(--cinza)">Data escolhida</p>' +
+          '<p style="margin-top:4px;font-size:24px;font-weight:800;color:var(--tinta);letter-spacing:-0.02em">' + (dia.length < 2 ? "0" + dia : dia) + "/08/2026</p>" +
+          '<p style="margin-top:12px;font-size:15px;color:var(--cinza)">Livre na nossa agenda. Chame no WhatsApp que a gente confirma e monta seu orçamento.</p>' +
+          '<a href="#" style="margin-top:20px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--vermelho);color:#fff;padding:14px;border-radius:12px;font-size:14px;font-weight:600">Verificar ' + (dia.length < 2 ? "0" + dia : dia) + '/08/2026</a>';
+        gsap.fromTo(painel, { opacity: 0.4, y: 6 }, { opacity: 1, y: 0, duration: 0.3 });
+      });
+    });
+  })();
+
+  // --- HERO: entrada em cascata + a onda "desenhando" ---
+  var onda = document.getElementById("onda-path");
+  if (onda) {
+    var comp = onda.getTotalLength();
+    gsap.set(onda, { strokeDasharray: comp, strokeDashoffset: comp });
+  }
+  gsap.set("[data-hero], h1 .palavra", { opacity: 0, y: 22 });
+
+  var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  tl.to("[data-hero]", { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 }, 0.1)
+    .to("h1 .palavra", { opacity: 1, y: 0, duration: 0.6, stagger: 0.05 }, 0.25);
+  if (onda) {
+    tl.to(onda, { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" }, 0.2);
+    // respiro contínuo, bem sutil
+    gsap.to("#onda", { y: 12, duration: 4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    // leve parallax da onda no scroll
+    gsap.to("#onda", { yPercent: 30, ease: "none", scrollTrigger: { trigger: "#topo", start: "top top", end: "bottom top", scrub: true } });
+  }
+
+  // --- Header compacta ao rolar ---
+  ScrollTrigger.create({
+    start: "top -60",
+    onUpdate: function (self) {
+      document.getElementById("cabecalho").classList.toggle("compacto", self.scroll() > 60);
+    },
+  });
+
+  // --- Reveal das seções (título/rótulo/sub sobem juntos) ---
+  gsap.utils.toArray("[data-reveal]").forEach(function (sec) {
+    var alvos = sec.querySelectorAll(".rotulo, h2, .sub");
+    gsap.from(alvos, {
+      opacity: 0, y: 24, duration: 0.7, stagger: 0.1, ease: "power3.out",
+      scrollTrigger: { trigger: sec, start: "top 78%" },
+    });
+  });
+
+  // --- Cards de pacote em cascata ---
+  gsap.from("[data-card]", {
+    opacity: 0, y: 30, duration: 0.6, stagger: 0.1, ease: "power3.out",
+    scrollTrigger: { trigger: ".grid-pacotes", start: "top 80%" },
+  });
+
+  // --- Passos do "como funciona" ---
+  gsap.from("[data-passo]", {
+    opacity: 0, y: 26, duration: 0.6, stagger: 0.12, ease: "power3.out",
+    scrollTrigger: { trigger: ".grid-passos", start: "top 82%" },
+  });
+
+  // --- Fechamento: bloco vermelho entra com leve escala ---
+  gsap.from("[data-fechamento] .wrap", {
+    opacity: 0, scale: 0.96, y: 20, duration: 0.8, ease: "power3.out",
+    scrollTrigger: { trigger: "[data-fechamento]", start: "top 80%" },
+  });
+})();
+</script>
+</body>
+</html>

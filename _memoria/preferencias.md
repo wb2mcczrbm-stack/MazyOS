@@ -35,4 +35,7 @@ PME que já se queimou com fornecedor antes.
 
 ## Preferências adicionais
 
-*(a preencher conforme forem aparecendo correções)*
+- **Criação de sites — referência de animação:** usar **GSAP** (biblioteca) para
+  animações de scroll, transições e micro-interações, e o site **https://gsap.com**
+  como régua de qualidade de movimento/polish (fluidez, capricho). Vale pra
+  qualquer site novo, salvo pedido em contrário.
