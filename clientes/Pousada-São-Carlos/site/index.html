@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pousada São Carlos — Guarujá (modelo)</title>
+<style>
+  /* ============================================================
+     Pousada São Carlos — MODELO v2 (foco B2B: agências de turismo).
+     Direção: "litoral sereno, clean e refinado".
+     Cores da marca (verde + amarelo) tratadas com sofisticação:
+       verde profundo como base, amarelo em DOURADO como único acento.
+     Foco: fechar parceria com agências, mantendo vitrine visual pro
+     hóspede que acha no Google. Fotos/história são PLACEHOLDER.
+     ============================================================ */
+  :root {
+    --verde: #16493d; --verde-2: #0e3830;
+    --dourado: #c8992e; --dourado-claro: #e0b552;
+    --papel: #fbfaf6; --areia: #f2ede2; --borda: #e6e0d3;
+    --tinta: #1e241f; --cinza: #6a6e63; --max: 1140px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color: var(--tinta); background: var(--papel); -webkit-font-smoothing: antialiased; line-height: 1.55; }
+  a { color: inherit; text-decoration: none; }
+  .serif { font-family: Georgia,"Times New Roman",serif; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .eyebrow { font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--dourado); }
+  h1,h2,h3 { font-family: Georgia,"Times New Roman",serif; font-weight: 700; letter-spacing: -0.01em; color: var(--verde); }
+  h2 { font-size: clamp(28px,4vw,42px); line-height: 1.12; }
+  .lead { font-size: 18px; color: var(--cinza); max-width: 56ch; }
+
+  .fita { background: var(--verde-2); color: #fff; text-align: center; font-size: 12.5px; padding: 8px 16px; letter-spacing: .02em; }
+  .fita b { color: var(--dourado-claro); }
+
+  .foto { position: relative; border-radius: 14px; overflow: hidden;
+    background: repeating-linear-gradient(135deg, rgba(22,73,61,0.05) 0 12px, rgba(22,73,61,0.02) 12px 24px), linear-gradient(160deg, #eef3ec, #f6efe0);
+    border: 1px solid var(--borda); display: flex; align-items: center; justify-content: center; }
+  .foto .tag { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--verde); opacity: .55; font-size: 13px; font-weight: 500; text-align: center; padding: 16px; }
+  .foto .tag svg { width: 30px; height: 30px; }
+
+  header { position: sticky; top: 0; z-index: 50; background: rgba(251,250,246,0.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--borda); transition: box-shadow .3s; }
+  header.sombra { box-shadow: 0 6px 24px rgba(22,73,61,0.06); }
+  .hbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: var(--max); margin: 0 auto; }
+  .marca { font-family: Georgia,serif; font-size: 21px; color: var(--verde); }
+  .marca .sc { color: var(--dourado); }
+  nav { display: none; gap: 30px; font-size: 15px; }
+  nav a { color: var(--tinta); opacity: .8; transition: opacity .2s, color .2s; }
+  nav a:hover { opacity: 1; color: var(--verde); }
+  @media (min-width: 900px){ nav { display: flex; align-items: center; } }
+  .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--verde); color: #fff; font-weight: 600; border-radius: 10px; padding: 11px 18px; font-size: 15px; transition: background .2s, transform .2s; }
+  .btn:hover { background: var(--verde-2); }
+  .btn svg { width: 17px; height: 17px; }
+
+  .hero { padding: 68px 0 40px; overflow: hidden; }
+  .hero-grid { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 900px){ .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 56px; } }
+  .hero h1 { font-size: clamp(38px,5.6vw,64px); line-height: 1.05; margin-top: 16px; max-width: 16ch; }
+  .hero h1 em { font-style: italic; color: var(--dourado); }
+  .hero .lead { margin-top: 22px; font-size: 19px; }
+  .hero-ctas { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn-grande { padding: 15px 28px; font-size: 16px; border-radius: 12px; }
+  .btn-linha { display: inline-flex; align-items: center; padding: 15px 26px; border: 1px solid var(--borda); border-radius: 12px; font-weight: 600; transition: border-color .2s; }
+  .btn-linha:hover { border-color: var(--verde); }
+  .hospede-linha { margin-top: 16px; font-size: 14.5px; color: var(--cinza); }
+  .hospede-linha a { color: var(--verde); font-weight: 600; border-bottom: 1px solid var(--dourado); }
+  .hero-foto { aspect-ratio: 4/5; }
+  @media (max-width: 899px){ .hero-foto { aspect-ratio: 16/11; } }
+
+  .stats { background: var(--verde); color: #fff; }
+  .stats-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; padding: 38px 24px; max-width: var(--max); margin: 0 auto; text-align: center; }
+  @media (min-width: 720px){ .stats-grid { grid-template-columns: repeat(4,1fr); } }
+  .stat .n { font-family: Georgia,serif; font-size: clamp(32px,5vw,46px); color: #fff; line-height: 1; }
+  .stat .n small { color: var(--dourado-claro); font-size: .55em; }
+  .stat .r { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,0.72); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  section.bloco { padding: 88px 0; }
+  .areia { background: var(--areia); }
+
+  /* PARA AGÊNCIAS — seção-chave (fundo verde, destaque comercial) */
+  .agencias { background: var(--verde); color: #fff; padding: 92px 0; }
+  .agencias .eyebrow { color: var(--dourado-claro); }
+  .agencias h2 { color: #fff; }
+  .agencias .lead { color: rgba(255,255,255,0.8); }
+  .parc-grid { display: grid; gap: 18px; grid-template-columns: 1fr; margin-top: 44px; }
+  @media (min-width: 640px){ .parc-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px){ .parc-grid { grid-template-columns: repeat(4,1fr); } }
+  .parc { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 24px; }
+  .parc .ic { width: 42px; height: 42px; border-radius: 10px; background: rgba(224,181,82,0.18); display: flex; align-items: center; justify-content: center; }
+  .parc .ic svg { width: 22px; height: 22px; color: var(--dourado-claro); }
+  .parc h3 { color: #fff; font-size: 18px; margin-top: 16px; }
+  .parc p { color: rgba(255,255,255,0.72); font-size: 14.5px; margin-top: 8px; }
+  .agencias .cta-linha { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn-dourado { display: inline-flex; align-items: center; gap: 10px; background: var(--dourado); color: #24200f; font-weight: 700; padding: 16px 30px; border-radius: 12px; transition: background .2s, transform .2s; }
+  .btn-dourado:hover { background: var(--dourado-claro); transform: translateY(-1px); }
+  .btn-dourado svg { width: 19px; height: 19px; }
+  .agencias .cta-nota { color: rgba(255,255,255,0.6); font-size: 14px; }
+
+  .sobre-grid { display: grid; gap: 44px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 900px){ .sobre-grid { grid-template-columns: 1fr 1fr; } }
+  .sobre p { margin-top: 18px; font-size: 17px; color: var(--tinta); opacity: .9; }
+  .placeholder-nota { margin-top: 20px; font-size: 13px; color: var(--cinza); border-left: 3px solid var(--dourado); padding: 6px 0 6px 14px; background: rgba(200,153,46,0.06); }
+  .sobre-foto { aspect-ratio: 5/4; }
+
+  .comod-grid { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; margin-top: 44px; }
+  @media (min-width: 720px){ .comod-grid { grid-template-columns: repeat(3,1fr); } }
+  @media (min-width: 1000px){ .comod-grid { grid-template-columns: repeat(5,1fr); } }
+  .comod { background: var(--papel); border: 1px solid var(--borda); border-radius: 14px; padding: 22px 18px; text-align: center; }
+  .comod svg { width: 26px; height: 26px; color: var(--verde); }
+  .comod .t { margin-top: 12px; font-size: 14px; font-weight: 600; }
+
+  .quartos-grid { display: grid; gap: 22px; grid-template-columns: 1fr; margin-top: 44px; }
+  @media (min-width: 720px){ .quartos-grid { grid-template-columns: repeat(3,1fr); } }
+  .quarto { background: var(--papel); border: 1px solid var(--borda); border-radius: 16px; overflow: hidden; }
+  .quarto .foto { border-radius: 0; border: none; border-bottom: 1px solid var(--borda); aspect-ratio: 4/3; }
+  .quarto .corpo { padding: 20px; }
+  .quarto h3 { font-size: 20px; }
+  .quarto p { margin-top: 6px; font-size: 14.5px; color: var(--cinza); }
+  .quarto .tags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .quarto .tags span { font-size: 12px; color: var(--verde); background: rgba(22,73,61,0.07); border-radius: 999px; padding: 4px 10px; }
+
+  .loc-grid { display: grid; gap: 40px; grid-template-columns: 1fr; align-items: center; margin-top: 44px; }
+  @media (min-width: 900px){ .loc-grid { grid-template-columns: 1fr 1fr; } }
+  .loc-lista { list-style: none; margin-top: 22px; display: flex; flex-direction: column; gap: 16px; }
+  .loc-lista li { display: flex; gap: 12px; font-size: 16px; }
+  .loc-lista .pin { color: var(--dourado); flex-shrink: 0; margin-top: 2px; }
+  .mapa { aspect-ratio: 4/3; border-radius: 16px; border: 1px solid var(--borda); position: relative; overflow: hidden; background: linear-gradient(160deg,#e8f0ea,#f4eede); }
+  .mapa .selo { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--verde); opacity: .6; font-size: 14px; text-align: center; }
+  .mapa .rota { position: absolute; left: 12%; right: 12%; top: 55%; height: 3px; background: repeating-linear-gradient(90deg,var(--dourado) 0 10px, transparent 10px 18px); }
+
+  .dep-grid { display: grid; gap: 22px; grid-template-columns: 1fr; margin-top: 44px; }
+  @media (min-width: 820px){ .dep-grid { grid-template-columns: repeat(3,1fr); } }
+  .dep { background: var(--papel); border: 1px solid var(--borda); border-radius: 16px; padding: 26px; }
+  .dep .estrelas { color: var(--dourado); letter-spacing: 2px; }
+  .dep blockquote { margin-top: 14px; font-family: Georgia,serif; font-size: 18px; color: var(--tinta); font-style: italic; }
+  .dep .quem { margin-top: 16px; font-size: 13.5px; color: var(--cinza); }
+  .dep .quem b { color: var(--tinta); font-style: normal; }
+
+  .fecho { background: var(--areia); text-align: center; padding: 92px 0; }
+  .fecho h2 { max-width: 20ch; margin: 0 auto; font-size: clamp(30px,4.6vw,48px); }
+  .fecho p { max-width: 50ch; margin: 18px auto 0; color: var(--cinza); font-size: 17px; }
+  .fecho-ctas { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  .btn-branco { display: inline-flex; align-items: center; gap: 10px; background: var(--verde); color: #fff; font-weight: 600; padding: 16px 30px; border-radius: 12px; transition: background .2s; }
+  .btn-branco:hover { background: var(--verde-2); }
+  .btn-branco svg { width: 19px; height: 19px; }
+
+  footer { background: var(--verde-2); color: #fff; padding: 56px 0 30px; }
+  .foot-grid { display: grid; gap: 36px; grid-template-columns: 1fr; }
+  @media (min-width: 780px){ .foot-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+  footer p, footer li, footer a { color: rgba(255,255,255,0.66); font-size: 15px; }
+  footer h4 { color: #fff; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  footer ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  footer a:hover { color: var(--dourado-claro); }
+  .foot-marca { font-family: Georgia,serif; font-size: 22px; }
+  .foot-marca .sc { color: var(--dourado); }
+  .copyr { max-width: var(--max); margin: 44px auto 0; padding: 22px 24px 0; border-top: 1px solid rgba(255,255,255,0.12); font-size: 13px; color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+
+<div class="fita">🏖️ <b>Modelo de apresentação</b> — Pousada São Carlos. Foco em parceria com agências; identidade, fotos e textos são rascunho (placeholder).</div>
+
+<!-- HEADER -->
+<header id="cabecalho">
+  <div class="hbar">
+    <a href="#topo" class="marca">Pousada <span class="sc">São Carlos</span></a>
+    <nav>
+      <a href="#agencias">Para agências</a>
+      <a href="#quartos">Quartos</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#avaliacoes">Avaliações</a>
+    </nav>
+    <a href="#agencias" class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      Área comercial
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="topo" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" data-hero>Para agências de turismo · Guarujá — SP</span>
+      <h1 data-hero>Seu parceiro de hospedagem <em>nas praias do Guarujá</em>.</h1>
+      <p class="lead" data-hero>A Pousada São Carlos trabalha com agências e operadoras — condições comerciais, confirmação rápida e uma localização a 10 minutos das praias das Pitangueiras e Astúrias que vende sozinha.</p>
+      <div class="hero-ctas" data-hero>
+        <a href="#agencias" class="btn btn-grande">Solicitar condições comerciais</a>
+        <a href="#quartos" class="btn-linha">Ver a pousada</a>
+      </div>
+      <p class="hospede-linha" data-hero>É hóspede? <a href="#reservar">Reserve direto com a pousada →</a></p>
+    </div>
+    <div class="foto hero-foto" data-hero>
+      <span class="tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>
+        Foto principal da pousada<br/>(fachada ou área comum)
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-grid">
+    <div class="stat" data-stat><div class="n" data-conta="10">0</div><div class="r">Quartos</div></div>
+    <div class="stat" data-stat><div class="n"><span data-conta="10">0</span><small> min</small></div><div class="r">Até a praia, a pé</div></div>
+    <div class="stat" data-stat><div class="n">24<small>h</small></div><div class="r">Recepção</div></div>
+    <div class="stat" data-stat><div class="n"><span data-conta="130">0</span><small>+</small></div><div class="r">Avaliações de hóspedes</div></div>
+  </div>
+</div>
+
+<!-- PARA AGÊNCIAS (seção-chave) -->
+<section id="agencias" class="agencias" data-reveal>
+  <div class="wrap">
+    <span class="eyebrow">Para agências de turismo</span>
+    <h2 style="margin-top:12px;max-width:22ch">Um parceiro confiável pra vender o Guarujá</h2>
+    <p class="lead" style="margin-top:14px">Trabalhamos com agências e operadoras que querem oferecer uma hospedagem de qualidade nas Pitangueiras — com condições, disponibilidade e atendimento à altura da sua venda.</p>
+    <div class="parc-grid">
+      <div class="parc" data-parc>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10l9-6 9 6M5 9v9h14V9M9 18v-5h6v5"/></svg></div>
+        <h3>Tarifas comissionadas</h3>
+        <p>Condições especiais para revenda, com margem justa pra sua agência.</p>
+      </div>
+      <div class="parc" data-parc>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Confirmação rápida</h3>
+        <p>Resposta ágil sobre disponibilidade pra você fechar com o cliente na hora.</p>
+      </div>
+      <div class="parc" data-parc>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v12H7l-3 3z"/></svg></div>
+        <h3>Atendimento dedicado</h3>
+        <p>Um contato direto no comercial — sem fila de central, sem intermediário.</p>
+      </div>
+      <div class="parc" data-parc>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M15 19c0-2 1-3.5 3-3.5s3 1.5 3 3.5"/></svg></div>
+        <h3>Suporte a grupos</h3>
+        <p>Bloqueio de quartos e apoio pra excursões e grupos no Guarujá.</p>
+      </div>
+    </div>
+    <div class="cta-linha">
+      <a href="#" class="btn-dourado">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.8-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.5zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg>
+        Falar com o comercial
+      </a>
+      <span class="cta-nota">Receba tabela de tarifas e condições de parceria.</span>
+    </div>
+  </div>
+</section>
+
+<!-- A POUSADA / HISTÓRIA -->
+<section id="sobre" class="bloco" data-reveal>
+  <div class="wrap sobre-grid">
+    <div class="sobre">
+      <span class="eyebrow">A pousada</span>
+      <h2 style="margin-top:12px">Um refúgio simples e acolhedor no coração das Pitangueiras</h2>
+      <p>A poucos passos das melhores praias do Guarujá, a Pousada São Carlos foi feita para quem quer aproveitar o mar sem abrir mão do conforto. São 10 quartos bem cuidados, com ar-condicionado, Wi-Fi e frigobar — e uma equipe pronta para receber a qualquer hora.</p>
+      <p class="placeholder-nota">✏️ Texto rascunho. A <b>história real da pousada</b> (quando começou, a família, o que a torna especial) entra aqui depois — ótimo argumento também na hora de apresentar pra agência.</p>
+    </div>
+    <div class="foto sobre-foto">
+      <span class="tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>
+        Foto da área comum,<br/>varanda ou café da manhã
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- COMODIDADES -->
+<section class="bloco areia" data-reveal>
+  <div class="wrap">
+    <span class="eyebrow">Comodidades</span>
+    <h2 style="margin-top:12px;max-width:18ch">Tudo pensado pro conforto do hóspede</h2>
+    <div class="comod-grid">
+      <div class="comod" data-comod><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8h20M4 8v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M8 12h8"/></svg><div class="t">Ar-condicionado</div></div>
+      <div class="comod" data-comod><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 15.5a5.5 5.5 0 0 1 7 0"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/></svg><div class="t">Wi-Fi grátis</div></div>
+      <div class="comod" data-comod><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M6 10h12"/></svg><div class="t">Frigobar</div></div>
+      <div class="comod" data-comod><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div class="t">Recepção 24h</div></div>
+      <div class="comod" data-comod><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20v-9l8-5 8 5v9"/><path d="M9 20v-6h6v6"/></svg><div class="t">Arrumação diária</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUARTOS -->
+<section id="quartos" class="bloco" data-reveal>
+  <div class="wrap">
+    <span class="eyebrow">Acomodações</span>
+    <h2 style="margin-top:12px;max-width:20ch">Quartos para cada tipo de estadia</h2>
+    <p class="lead" style="margin-top:14px">Modelos ilustrativos — as fotos e os detalhes reais de cada quarto entram depois.</p>
+    <div class="quartos-grid">
+      <div class="quarto" data-quarto>
+        <div class="foto"><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>Foto do quarto</span></div>
+        <div class="corpo"><h3>Standard Casal</h3><p>Aconchegante e prático, ideal para uma escapada a dois.</p><div class="tags"><span>Ar-cond.</span><span>Wi-Fi</span><span>Frigobar</span></div></div>
+      </div>
+      <div class="quarto" data-quarto>
+        <div class="foto"><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>Foto do quarto</span></div>
+        <div class="corpo"><h3>Família</h3><p>Espaço a mais para quem viaja com a criançada.</p><div class="tags"><span>Até 4 pessoas</span><span>Ar-cond.</span><span>Wi-Fi</span></div></div>
+      </div>
+      <div class="quarto" data-quarto>
+        <div class="foto"><span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>Foto do quarto</span></div>
+        <div class="corpo"><h3>Superior</h3><p>Um pouco mais de espaço e conforto para a estadia perfeita.</p><div class="tags"><span>Ar-cond.</span><span>Wi-Fi</span><span>Frigobar</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCALIZAÇÃO -->
+<section id="localizacao" class="bloco areia" data-reveal>
+  <div class="wrap">
+    <span class="eyebrow">Localização</span>
+    <h2 style="margin-top:12px;max-width:20ch">No ponto certo do Guarujá</h2>
+    <div class="loc-grid">
+      <div>
+        <ul class="loc-lista">
+          <li><span class="pin"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg></span><span><b>Rua São Carlos, 147</b> — Pitangueiras, Guarujá/SP</span></li>
+          <li><span class="pin">🏖️</span><span><b>10 min a pé</b> da Praia das Pitangueiras e da Praia das Astúrias</span></li>
+          <li><span class="pin">🐠</span><span><b>15 min de carro</b> do Aquário de Santos</span></li>
+        </ul>
+        <a href="#agencias" class="btn btn-grande" style="margin-top:28px">Quero oferecer o Guarujá na minha agência</a>
+      </div>
+      <div class="mapa">
+        <div class="rota"></div>
+        <div class="selo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:30px;height:30px"><path d="M9 3l6 2 6-2v16l-6 2-6-2-6 2V5l6-2zM9 3v16M15 5v16"/></svg>
+          Mapa da localização<br/>(embed do Google Maps)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVALIAÇÕES -->
+<section id="avaliacoes" class="bloco" data-reveal>
+  <div class="wrap">
+    <span class="eyebrow">O que dizem os hóspedes</span>
+    <h2 style="margin-top:12px;max-width:22ch">Reputação que ajuda a sua agência a vender</h2>
+    <p class="lead" style="margin-top:14px">Depoimentos ilustrativos — vamos trazer avaliações reais do Google, TripAdvisor e Booking.</p>
+    <div class="dep-grid">
+      <div class="dep" data-dep><div class="estrelas">★★★★★</div><blockquote>“Localização perfeita, pertinho da praia. Atendimento atencioso do começo ao fim.”</blockquote><p class="quem"><b>Hóspede</b> · depoimento a inserir</p></div>
+      <div class="dep" data-dep><div class="estrelas">★★★★★</div><blockquote>“Quarto limpo, cama confortável e um café da manhã que valeu cada minuto.”</blockquote><p class="quem"><b>Hóspede</b> · depoimento a inserir</p></div>
+      <div class="dep" data-dep><div class="estrelas">★★★★★</div><blockquote>“Voltamos pela terceira vez. Já virou o nosso lugar no Guarujá.”</blockquote><p class="quem"><b>Hóspede</b> · depoimento a inserir</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FECHAMENTO (dois caminhos) -->
+<section id="reservar" class="fecho" data-reveal>
+  <div class="wrap">
+    <h2>Vamos fechar essa parceria?</h2>
+    <p>Fale com o comercial pra receber tarifas e condições de agência. Se você é o hóspede, reserve direto com a pousada — sem intermediário.</p>
+    <div class="fecho-ctas">
+      <a href="#" class="btn-dourado">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.8-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.5zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg>
+        Sou agência — falar com o comercial
+      </a>
+      <a href="#" class="btn-branco">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.8-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.5zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg>
+        Sou hóspede — reservar
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RODAPÉ -->
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="foot-marca">Pousada <span class="sc">São Carlos</span></div>
+      <p style="margin-top:14px;max-width:32ch;line-height:1.6">Hospedagem acolhedora nas Pitangueiras, a poucos passos das praias do Guarujá. Parcerias com agências de turismo.</p>
+    </div>
+    <div>
+      <h4>Comercial / Agências</h4>
+      <ul>
+        <li><a href="#">WhatsApp comercial — (a inserir)</a></li>
+        <li><a href="#">E-mail comercial — (a inserir)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reservas (hóspede)</h4>
+      <ul>
+        <li><a href="#">WhatsApp — (a inserir)</a></li>
+        <li><a href="#">Instagram — (a inserir)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Endereço</h4>
+      <p>Rua São Carlos, 147<br/>Pitangueiras — Guarujá/SP<br/>CEP 11250-000</p>
+    </div>
+  </div>
+  <div class="copyr">© Pousada São Carlos · Guarujá — SP · Modelo de apresentação (Romano &amp; Bettini)</div>
+</footer>
+
+<script src="lib/gsap.min.js"></script>
+<script src="lib/ScrollTrigger.min.js"></script>
+<script>
+/* Animações GSAP — tom sereno da pousada. Respeita prefers-reduced-motion. */
+(function () {
+  var reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduzir || !window.gsap) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  ScrollTrigger.create({ start: "top -40", onUpdate: function (s) {
+    document.getElementById("cabecalho").classList.toggle("sombra", s.scroll() > 40);
+  }});
+
+  gsap.set("[data-hero]", { opacity: 0, y: 26 });
+  gsap.timeline({ defaults: { ease: "power3.out" } })
+      .to("[data-hero]", { opacity: 1, y: 0, duration: .8, stagger: .1 }, .1)
+      .from(".hero-foto", { opacity: 0, scale: .96, duration: 1, ease: "power2.out" }, .2);
+
+  gsap.utils.toArray("[data-conta]").forEach(function (el) {
+    var alvo = +el.getAttribute("data-conta"), obj = { v: 0 };
+    ScrollTrigger.create({ trigger: el, start: "top 90%", once: true, onEnter: function () {
+      gsap.to(obj, { v: alvo, duration: 1.3, ease: "power2.out", onUpdate: function () { el.textContent = Math.round(obj.v); } });
+    }});
+  });
+  gsap.from("[data-stat]", { opacity: 0, y: 20, duration: .6, stagger: .1, ease: "power3.out", scrollTrigger: { trigger: ".stats", start: "top 82%" } });
+
+  gsap.utils.toArray("[data-reveal]").forEach(function (sec) {
+    var alvos = sec.querySelectorAll(".eyebrow, h2, .lead, .sobre p, .placeholder-nota, .loc-lista, .mapa, .sobre-foto, .cta-linha, .fecho-ctas");
+    gsap.from(alvos, { opacity: 0, y: 24, duration: .7, stagger: .09, ease: "power3.out", scrollTrigger: { trigger: sec, start: "top 80%" } });
+  });
+
+  [["[data-parc]", ".parc-grid"], ["[data-comod]", ".comod-grid"], ["[data-quarto]", ".quartos-grid"], ["[data-dep]", ".dep-grid"]].forEach(function (par) {
+    gsap.from(par[0], { opacity: 0, y: 34, duration: .6, stagger: .1, ease: "power3.out", scrollTrigger: { trigger: par[1], start: "top 84%" } });
+  });
+})();
+</script>
+</body>
+</html>
