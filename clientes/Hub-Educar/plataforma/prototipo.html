@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hub Educar — protótipo</title>
+<style>
+  /* ============================================================
+     IDENTIDADE PLACEHOLDER — cores neutras. A identidade real do
+     Hub Educar ainda não foi definida; nada aqui é cor de marca.
+     ============================================================ */
+  :root{
+    --bg:#f4f5f7;
+    --sup:#ffffff;
+    --tinta:#1c2230;
+    --tinta-2:#4a5265;
+    --suave:#8b93a5;
+    --linha:#e4e7ec;
+    --linha-2:#eef0f3;
+    --acao:#2f6df0;
+    --acao-esc:#2258d6;
+    --acao-suave:#eaf1ff;
+    --ok:#1a8f5c;
+    --ok-suave:#e6f5ee;
+    --alerta:#c2410c;
+    --alerta-suave:#fdeee5;
+    --aviso:#b7791f;
+    --aviso-suave:#fbf3e2;
+    --sombra:0 1px 2px rgba(20,25,40,.04),0 8px 24px rgba(20,25,40,.06);
+    --raio:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+  }
+  button{font-family:inherit;cursor:pointer}
+  a{color:inherit}
+
+  /* ---------- barra de contexto do protótipo ---------- */
+  .demo-bar{
+    position:sticky;top:0;z-index:50;background:var(--tinta);color:#fff;
+    display:flex;align-items:center;gap:14px;padding:9px 18px;font-size:13px;
+  }
+  .demo-bar b{font-weight:600}
+  .demo-bar .tag{background:rgba(255,255,255,.14);padding:2px 9px;border-radius:20px;font-size:11px;letter-spacing:.03em}
+  .demo-bar .seg{margin-left:auto;display:flex;background:rgba(255,255,255,.1);border-radius:9px;padding:3px}
+  .demo-bar .seg button{
+    background:transparent;border:0;color:#c7cdda;padding:6px 14px;border-radius:7px;
+    font-size:12.5px;font-weight:600;
+  }
+  .demo-bar .seg button.on{background:#fff;color:var(--tinta)}
+
+  /* ---------- telas ---------- */
+  .tela{display:none;min-height:calc(100vh - 39px)}
+  .tela.on{display:block}
+
+  /* ---------- auth (aluno) ---------- */
+  .auth{max-width:430px;margin:0 auto;padding:56px 22px 40px}
+  .logo{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:6px}
+  .logo .mk{width:38px;height:38px;border-radius:10px;background:var(--tinta);color:#fff;
+    display:grid;place-items:center;font-weight:800;font-size:19px}
+  .logo .nm{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .logo .nm span{color:var(--suave);font-weight:600}
+  .auth .ph{text-align:center;color:var(--suave);font-size:12px;margin:2px 0 30px}
+  .cartao{background:var(--sup);border:1px solid var(--linha);border-radius:var(--raio);
+    box-shadow:var(--sombra);padding:26px 24px}
+  .cartao h2{margin:0 0 4px;font-size:19px;letter-spacing:-.01em}
+  .cartao .sub{color:var(--tinta-2);font-size:13.5px;margin:0 0 20px}
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--tinta-2);margin:14px 0 6px}
+  .inp{width:100%;border:1px solid var(--linha);border-radius:9px;padding:11px 12px;font-size:14.5px;
+    background:#fff;color:var(--tinta)}
+  .inp:focus{outline:2px solid var(--acao-suave);border-color:var(--acao)}
+  .inp.codigo{letter-spacing:.32em;text-align:center;font-weight:700;font-size:18px;text-transform:uppercase}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    background:var(--acao);color:#fff;border:0;border-radius:9px;padding:12px;font-size:14.5px;
+    font-weight:700;margin-top:20px}
+  .btn:hover{background:var(--acao-esc)}
+  .btn.sec{background:#fff;color:var(--tinta);border:1px solid var(--linha)}
+  .btn.sec:hover{background:var(--bg)}
+  .btn.ghost{background:transparent;color:var(--acao);width:auto;padding:8px 0;margin:0}
+  .troca{text-align:center;font-size:13px;color:var(--tinta-2);margin-top:18px}
+  .troca a{color:var(--acao);font-weight:600;text-decoration:none;cursor:pointer}
+  .dica{display:flex;gap:9px;background:var(--aviso-suave);border:1px solid #f0e2bf;color:#8a6414;
+    border-radius:9px;padding:10px 12px;font-size:12.5px;margin-top:16px;line-height:1.45}
+
+  /* ---------- app shell ---------- */
+  .app{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 39px)}
+  .lat{background:var(--sup);border-right:1px solid var(--linha);padding:20px 14px;display:flex;flex-direction:column}
+  .lat .logo{justify-content:flex-start;margin:0 6px 22px}
+  .lat .logo .nm{font-size:17px}
+  .nav{display:flex;flex-direction:column;gap:2px}
+  .nav a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;
+    font-size:14px;font-weight:600;color:var(--tinta-2);text-decoration:none}
+  .nav a .ic{width:18px;text-align:center;opacity:.85}
+  .nav a:hover{background:var(--bg)}
+  .nav a.on{background:var(--acao-suave);color:var(--acao-esc)}
+  .nav a .badge{margin-left:auto;background:var(--alerta);color:#fff;font-size:11px;font-weight:700;
+    min-width:19px;height:19px;border-radius:20px;display:grid;place-items:center;padding:0 5px}
+  .lat .rodape{margin-top:auto;border-top:1px solid var(--linha);padding-top:14px;display:flex;
+    align-items:center;gap:10px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--acao-suave);color:var(--acao-esc);
+    display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+  .lat .rodape .qm{font-size:12.5px;line-height:1.25}
+  .lat .rodape .qm b{display:block;font-weight:700}
+  .lat .rodape .qm span{color:var(--suave);font-size:11px}
+
+  .conteudo{padding:26px 30px 60px;max-width:960px}
+  .cab{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+  .cab h1{margin:0;font-size:23px;letter-spacing:-.015em}
+  .cab .turma{color:var(--suave);font-size:13px;margin-top:3px}
+  .cab .turma b{color:var(--tinta-2)}
+
+  .painel{display:none}
+  .painel.on{display:block}
+
+  /* ---------- cards de material ---------- */
+  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .arq{background:var(--sup);border:1px solid var(--linha);border-radius:12px;padding:16px;
+    box-shadow:var(--sombra);display:flex;flex-direction:column;gap:10px}
+  .arq .pdf{width:38px;height:38px;border-radius:9px;background:var(--alerta-suave);color:var(--alerta);
+    display:grid;place-items:center;font-size:11px;font-weight:800}
+  .arq h3{margin:0;font-size:14.5px;line-height:1.3}
+  .arq .met{color:var(--suave);font-size:12px;margin-top:auto}
+  .arq .baixar{display:inline-flex;align-items:center;gap:6px;color:var(--acao);font-weight:700;
+    font-size:13px;text-decoration:none;margin-top:2px}
+
+  .secao-tit{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--suave);margin:26px 0 12px}
+  .secao-tit:first-child{margin-top:0}
+
+  /* ---------- lista de atividades ---------- */
+  .lista{display:flex;flex-direction:column;gap:10px}
+  .item{background:var(--sup);border:1px solid var(--linha);border-radius:12px;padding:15px 17px;
+    box-shadow:var(--sombra);display:flex;align-items:center;gap:14px}
+  .item .txt{flex:1;min-width:0}
+  .item h3{margin:0 0 3px;font-size:15px}
+  .item .met{color:var(--suave);font-size:12.5px}
+  .item .met b{color:var(--alerta);font-weight:700}
+  .selo{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+  .selo.pend{background:var(--alerta-suave);color:var(--alerta)}
+  .selo.feito{background:var(--ok-suave);color:var(--ok)}
+  .selo.corr{background:var(--acao-suave);color:var(--acao-esc)}
+  .item .btn{width:auto;margin:0;padding:9px 15px;font-size:13px}
+
+  /* ---------- dúvidas ---------- */
+  .duvida{background:var(--sup);border:1px solid var(--linha);border-radius:12px;padding:16px 18px;
+    box-shadow:var(--sombra);margin-bottom:12px}
+  .duvida .top{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .duvida .top .avatar{width:28px;height:28px;font-size:11px}
+  .duvida .top b{font-size:13.5px}
+  .duvida .top .met{color:var(--suave);font-size:12px;margin-left:auto}
+  .duvida .q{font-size:14.5px;font-weight:600;margin:0 0 4px}
+  .duvida .marca{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;
+    color:var(--aviso);background:var(--aviso-suave);padding:3px 9px;border-radius:20px;margin-bottom:10px}
+  .resp{background:var(--ok-suave);border:1px solid #cfeadd;border-radius:10px;padding:12px 14px;margin-top:8px}
+  .resp .top b{color:var(--ok)}
+  .resp .top .prof{background:var(--ok);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px}
+  .resp p{margin:6px 0 0;font-size:13.5px;color:var(--tinta-2)}
+  .resp .avatar{background:var(--ok-suave);color:var(--ok)}
+  .semresp{color:var(--suave);font-size:13px;font-style:italic;padding:6px 0 2px}
+  .contar{color:var(--suave);font-size:12.5px;margin-top:9px}
+
+  .caixa-nova{background:var(--sup);border:1px dashed var(--linha);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+  .caixa-nova textarea{width:100%;border:1px solid var(--linha);border-radius:9px;padding:11px;
+    font-family:inherit;font-size:14px;resize:vertical;min-height:64px}
+  .caixa-nova .lin{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+  .caixa-nova .btn{width:auto;margin:0;padding:9px 16px;font-size:13.5px}
+
+  /* ---------- professor ---------- */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+  .stat{background:var(--sup);border:1px solid var(--linha);border-radius:12px;padding:16px 18px;box-shadow:var(--sombra)}
+  .stat .v{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .stat .l{color:var(--suave);font-size:12.5px;margin-top:2px}
+  .stat.destaque{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+  .stat.destaque .l{color:#aeb6c6}
+  .codigo-dia{display:flex;align-items:center;gap:16px;background:var(--acao-suave);
+    border:1px solid #cfe0ff;border-radius:12px;padding:16px 20px;margin-bottom:24px}
+  .codigo-dia .cod{font-size:30px;font-weight:800;letter-spacing:.22em;color:var(--acao-esc)}
+  .codigo-dia .info{font-size:13px;color:var(--tinta-2)}
+  .codigo-dia .info b{color:var(--tinta)}
+  .codigo-dia .exp{margin-left:auto;text-align:right;font-size:12px;color:var(--suave)}
+  .codigo-dia .exp b{display:block;font-size:14px;color:var(--alerta);font-weight:700}
+
+  table{width:100%;border-collapse:collapse;background:var(--sup);border:1px solid var(--linha);
+    border-radius:12px;overflow:hidden;box-shadow:var(--sombra)}
+  th{text-align:left;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--suave);
+    padding:12px 16px;border-bottom:1px solid var(--linha);font-weight:700}
+  td{padding:12px 16px;border-bottom:1px solid var(--linha-2);font-size:14px}
+  tr:last-child td{border-bottom:0}
+  .aln{display:flex;align-items:center;gap:10px}
+  .pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+  .pill.ok{background:var(--ok-suave);color:var(--ok)}
+  .pill.new{background:var(--aviso-suave);color:var(--aviso)}
+  .lixo{background:transparent;border:1px solid var(--linha);color:var(--alerta);border-radius:8px;
+    padding:6px 11px;font-size:12.5px;font-weight:600}
+  .lixo:hover{background:var(--alerta-suave);border-color:#f3c9b0}
+
+  .barra-acao{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+  .barra-acao .btn{width:auto;margin:0;padding:10px 16px;font-size:13.5px}
+
+  .aviso-lgpd{display:flex;gap:10px;background:var(--acao-suave);border:1px solid #cfe0ff;
+    border-radius:10px;padding:12px 15px;font-size:12.5px;color:var(--tinta-2);margin-top:26px;line-height:1.5}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--tinta);color:#fff;padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:600;
+    opacity:0;pointer-events:none;transition:.25s;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:720px){
+    .app{grid-template-columns:1fr}
+    .lat{flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid var(--linha);
+      padding:10px 14px;overflow-x:auto}
+    .lat .logo{margin:0 14px 0 0}.nav{flex-direction:row}.nav a .badge{display:none}
+    .lat .rodape{display:none}
+    .codigo-dia{flex-wrap:wrap}.codigo-dia .exp{margin:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ barra do protótipo ============ -->
+<div class="demo-bar">
+  <b>Hub Educar</b><span class="tag">protótipo navegável</span>
+  <span style="color:#aeb6c6;font-size:12px">cores de placeholder · sem identidade definida</span>
+  <div class="seg">
+    <button id="tab-aluno" class="on" onclick="verLado('aluno')">👩‍🎓 Aluno</button>
+    <button id="tab-prof" onclick="verLado('prof')">🧑‍🏫 Professor</button>
+  </div>
+</div>
+
+<!-- ================= LADO ALUNO ================= -->
+<div id="lado-aluno">
+
+  <!-- tela: entrar com código -->
+  <section id="a-codigo" class="tela on">
+    <div class="auth">
+      <div class="logo"><div class="mk">H</div><div class="nm">Hub <span>Educar</span></div></div>
+      <div class="ph">plataforma de estudos · acesso do aluno</div>
+      <div class="cartao">
+        <h2>Entrar na turma</h2>
+        <p class="sub">Digite o código que o professor passou hoje. Ele muda todo dia.</p>
+        <label>Código da turma</label>
+        <input class="inp codigo" value="9F2K" maxlength="6">
+        <button class="btn" onclick="irAluno('a-cadastro')">Continuar</button>
+        <div class="dica">🔒 <div>O código de hoje só vale hoje. Amanhã o professor mostra um novo — assim ninguém entra com um código antigo.</div></div>
+        <div class="troca">Já tem conta? <a onclick="irAluno('a-login')">Fazer login</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- tela: criar conta -->
+  <section id="a-cadastro" class="tela">
+    <div class="auth">
+      <div class="logo"><div class="mk">H</div><div class="nm">Hub <span>Educar</span></div></div>
+      <div class="ph">turma reconhecida · 9º ano B — Prof. Marina</div>
+      <div class="cartao">
+        <h2>Criar sua conta</h2>
+        <p class="sub">Você entrou na turma <b>9º ano B</b>. Crie seu login para acessar o material.</p>
+        <label>Seu nome</label>
+        <input class="inp" placeholder="Nome completo">
+        <label>E-mail</label>
+        <input class="inp" placeholder="voce@email.com">
+        <label>Senha</label>
+        <input class="inp" type="password" value="········">
+        <button class="btn" onclick="entrarApp()">Criar conta e entrar</button>
+        <div class="troca"><a onclick="irAluno('a-codigo')">← Voltar</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- tela: login -->
+  <section id="a-login" class="tela">
+    <div class="auth">
+      <div class="logo"><div class="mk">H</div><div class="nm">Hub <span>Educar</span></div></div>
+      <div class="ph">plataforma de estudos · acesso do aluno</div>
+      <div class="cartao">
+        <h2>Entrar</h2>
+        <p class="sub">Bom te ver de novo.</p>
+        <label>E-mail</label>
+        <input class="inp" value="joao@email.com">
+        <label>Senha</label>
+        <input class="inp" type="password" value="········">
+        <button class="btn" onclick="entrarApp()">Entrar</button>
+        <div class="troca">Novo por aqui? <a onclick="irAluno('a-codigo')">Entrar com código da turma</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- app do aluno -->
+  <section id="a-app" class="tela">
+    <div class="app">
+      <aside class="lat">
+        <div class="logo"><div class="mk">H</div><div class="nm">Hub <span>Educar</span></div></div>
+        <nav class="nav">
+          <a class="on" onclick="painelAluno('p-material',this)"><span class="ic">📄</span> Material</a>
+          <a onclick="painelAluno('p-ativ',this)"><span class="ic">✏️</span> Atividades <span class="badge">2</span></a>
+          <a onclick="painelAluno('p-duvidas',this)"><span class="ic">💬</span> Dúvidas</a>
+        </nav>
+        <div class="rodape">
+          <div class="avatar">JO</div>
+          <div class="qm"><b>João Oliveira</b><span>9º ano B</span></div>
+        </div>
+      </aside>
+
+      <main class="conteudo">
+        <!-- material -->
+        <div id="p-material" class="painel on">
+          <div class="cab"><div><h1>Material</h1><div class="turma">Turma <b>9º ano B</b> · Prof. Marina</div></div></div>
+          <div class="secao-tit">Aulas</div>
+          <div class="grade">
+            <div class="arq"><div class="pdf">PDF</div><h3>Equações do 2º grau — teoria</h3><div class="met">Matemática · 3,2 MB</div><a class="baixar" onclick="toast('Baixando PDF…')">⬇ Baixar</a></div>
+            <div class="arq"><div class="pdf">PDF</div><h3>Revolução Industrial</h3><div class="met">História · 5,1 MB</div><a class="baixar" onclick="toast('Baixando PDF…')">⬇ Baixar</a></div>
+            <div class="arq"><div class="pdf">PDF</div><h3>Figuras de linguagem</h3><div class="met">Português · 1,8 MB</div><a class="baixar" onclick="toast('Baixando PDF…')">⬇ Baixar</a></div>
+          </div>
+          <div class="secao-tit">Lições de casa</div>
+          <div class="grade">
+            <div class="arq"><div class="pdf">PDF</div><h3>Lista 04 — Bhaskara</h3><div class="met">Matemática · 0,9 MB</div><a class="baixar" onclick="toast('Baixando PDF…')">⬇ Baixar</a></div>
+            <div class="arq"><div class="pdf">PDF</div><h3>Questionário cap. 7</h3><div class="met">História · 0,6 MB</div><a class="baixar" onclick="toast('Baixando PDF…')">⬇ Baixar</a></div>
+          </div>
+        </div>
+
+        <!-- atividades -->
+        <div id="p-ativ" class="painel">
+          <div class="cab"><div><h1>Atividades</h1><div class="turma">Turma <b>9º ano B</b></div></div></div>
+          <div class="secao-tit">A entregar</div>
+          <div class="lista">
+            <div class="item">
+              <div class="txt"><h3>Lista 04 — Equações de 2º grau</h3><div class="met">Matemática · entrega até <b>25/07</b></div></div>
+              <span class="selo pend">Pendente</span>
+              <button class="btn" onclick="toast('Abriria o envio da resposta (upload)')">Entregar</button>
+            </div>
+            <div class="item">
+              <div class="txt"><h3>Resumo — Revolução Industrial</h3><div class="met">História · entrega até <b>27/07</b></div></div>
+              <span class="selo pend">Pendente</span>
+              <button class="btn" onclick="toast('Abriria o envio da resposta (upload)')">Entregar</button>
+            </div>
+          </div>
+          <div class="secao-tit">Enviadas</div>
+          <div class="lista">
+            <div class="item">
+              <div class="txt"><h3>Interpretação de texto — crônica</h3><div class="met">Português · entregue em 20/07</div></div>
+              <span class="selo corr">Corrigida · 9,0</span>
+              <button class="btn sec" onclick="toast('Abriria a correção do professor')">Ver correção</button>
+            </div>
+            <div class="item">
+              <div class="txt"><h3>Mapa mental — Idade Média</h3><div class="met">História · entregue em 18/07</div></div>
+              <span class="selo feito">Entregue</span>
+              <button class="btn sec" onclick="toast('Ver o que você enviou')">Ver envio</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- dúvidas -->
+        <div id="p-duvidas" class="painel">
+          <div class="cab"><div><h1>Dúvidas da turma</h1><div class="turma">Perguntas e respostas do <b>9º ano B</b></div></div></div>
+          <div class="caixa-nova">
+            <textarea placeholder="Tem uma dúvida? Escreva aqui — o professor responde e todo mundo da turma vê."></textarea>
+            <div class="lin"><span class="met" style="color:var(--suave);font-size:12.5px">Sua pergunta fica visível pra turma.</span><button class="btn" onclick="toast('Dúvida publicada para a turma')">Publicar dúvida</button></div>
+          </div>
+
+          <div class="duvida">
+            <div class="top"><div class="avatar">MA</div><b>Mariana</b><span class="met">há 2 horas</span></div>
+            <p class="q">Na questão 3 da lista, como sei se uso Bhaskara ou fatoração?</p>
+            <div class="marca">🙋 3 colegas têm a mesma dúvida</div>
+            <div class="resp">
+              <div class="top"><div class="avatar">MB</div><b>Prof. Marina</b><span class="prof">PROFESSOR</span><span class="met">há 1 hora</span></div>
+              <p>Boa pergunta! Se der pra achar dois números que somam -b e multiplicam c, fatora (mais rápido). Se não sair de cabeça, Bhaskara sempre funciona. Vou postar um exemplo no material.</p>
+            </div>
+          </div>
+
+          <div class="duvida">
+            <div class="top"><div class="avatar">PE</div><b>Pedro</b><span class="met">há 5 horas</span></div>
+            <p class="q">O resumo da Revolução Industrial pode ser escrito à mão e tirar foto?</p>
+            <div class="resp">
+              <div class="top"><div class="avatar">MB</div><b>Prof. Marina</b><span class="prof">PROFESSOR</span><span class="met">há 4 horas</span></div>
+              <p>Pode sim, Pedro. Foto legível já está ótimo.</p>
+            </div>
+          </div>
+
+          <div class="duvida">
+            <div class="top"><div class="avatar">LU</div><b>Lucas</b><span class="met">há 1 dia</span></div>
+            <p class="q">Alguém sabe se a prova cobre até o capítulo 8?</p>
+            <div class="semresp">Aguardando resposta do professor…</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+
+<!-- ================= LADO PROFESSOR ================= -->
+<div id="lado-prof" style="display:none">
+
+  <!-- login professor -->
+  <section id="pr-login" class="tela on">
+    <div class="auth">
+      <div class="logo"><div class="mk">H</div><div class="nm">Hub <span>Educar</span></div></div>
+      <div class="ph">painel do professor</div>
+      <div class="cartao">
+        <h2>Entrar como professor</h2>
+        <p class="sub">Gerencie turmas, material, atividades e dúvidas.</p>
+        <label>E-mail</label><input class="inp" value="marina@hubeducar.com">
+        <label>Senha</label><input class="inp" type="password" value="········">
+        <button class="btn" onclick="irProf('pr-app')">Entrar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- app professor -->
+  <section id="pr-app" class="tela">
+    <div class="app">
+      <aside class="lat">
+        <div class="logo"><div class="mk">H</div><div class="nm">Hub <span>Educar</span></div></div>
+        <nav class="nav">
+          <a class="on" onclick="painelProf('t-visao',this)"><span class="ic">📊</span> Visão geral</a>
+          <a onclick="painelProf('t-alunos',this)"><span class="ic">👥</span> Alunos</a>
+          <a onclick="painelProf('t-material',this)"><span class="ic">📄</span> Material</a>
+          <a onclick="painelProf('t-ativ',this)"><span class="ic">✏️</span> Atividades <span class="badge">5</span></a>
+          <a onclick="painelProf('t-duvidas',this)"><span class="ic">💬</span> Dúvidas <span class="badge">1</span></a>
+        </nav>
+        <div class="rodape">
+          <div class="avatar">MB</div>
+          <div class="qm"><b>Prof. Marina</b><span>9º ano B</span></div>
+        </div>
+      </aside>
+
+      <main class="conteudo">
+        <!-- visão geral -->
+        <div id="t-visao" class="painel on">
+          <div class="cab"><div><h1>Visão geral</h1><div class="turma">Turma <b>9º ano B</b> · 28 alunos</div></div></div>
+
+          <div class="codigo-dia">
+            <div class="cod" id="cod-dia">9F2K</div>
+            <div class="info">Este é o <b>código de hoje</b> da turma.<br>Mostre para os alunos que vão se cadastrar.</div>
+            <div class="exp">expira em<b>23:59 de hoje</b><a class="btn ghost" onclick="rotacionar()">↻ Gerar novo</a></div>
+          </div>
+
+          <div class="stats">
+            <div class="stat destaque"><div class="v">28</div><div class="l">Alunos na turma</div></div>
+            <div class="stat"><div class="v">5</div><div class="l">Entregas para corrigir</div></div>
+            <div class="stat"><div class="v">1</div><div class="l">Dúvida sem resposta</div></div>
+            <div class="stat"><div class="v">12</div><div class="l">PDFs no material</div></div>
+          </div>
+
+          <div class="secao-tit">Precisa da sua atenção</div>
+          <div class="lista">
+            <div class="item"><div class="txt"><h3>1 aluno novo entrou hoje</h3><div class="met">Confira se todos são da turma na aba Alunos</div></div><button class="btn sec" onclick="painelProf('t-alunos',document.querySelectorAll('#lado-prof .nav a')[1])">Ver alunos</button></div>
+            <div class="item"><div class="txt"><h3>Dúvida do Lucas aguardando</h3><div class="met">“a prova cobre até o capítulo 8?”</div></div><button class="btn" onclick="painelProf('t-duvidas',document.querySelectorAll('#lado-prof .nav a')[4])">Responder</button></div>
+          </div>
+        </div>
+
+        <!-- alunos -->
+        <div id="t-alunos" class="painel">
+          <div class="cab"><div><h1>Alunos</h1><div class="turma">Turma <b>9º ano B</b> · 28 matriculados</div></div></div>
+          <div class="codigo-dia">
+            <div class="cod">9F2K</div>
+            <div class="info">Código de hoje. Quem entrar com ele cai nesta turma —<br><b>confira a lista</b> e remova quem não for seu aluno.</div>
+            <div class="exp">expira em<b>23:59 de hoje</b></div>
+          </div>
+          <table>
+            <thead><tr><th>Aluno</th><th>Entrou em</th><th>Status</th><th style="text-align:right">Ação</th></tr></thead>
+            <tbody>
+              <tr><td><div class="aln"><div class="avatar">JO</div>João Oliveira</div></td><td>12/03</td><td><span class="pill ok">Matriculado</span></td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'João')">Remover</button></td></tr>
+              <tr><td><div class="aln"><div class="avatar">MA</div>Mariana Alves</div></td><td>12/03</td><td><span class="pill ok">Matriculado</span></td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'Mariana')">Remover</button></td></tr>
+              <tr><td><div class="aln"><div class="avatar">PE</div>Pedro Henrique</div></td><td>13/03</td><td><span class="pill ok">Matriculado</span></td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'Pedro')">Remover</button></td></tr>
+              <tr style="background:var(--aviso-suave)"><td><div class="aln"><div class="avatar" style="background:var(--aviso-suave);color:var(--aviso)">??</div>Kaique_2010</div></td><td><b>hoje, 08:14</b></td><td><span class="pill new">Entrou hoje</span></td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'Kaique_2010')">Remover</button></td></tr>
+              <tr><td><div class="aln"><div class="avatar">LU</div>Lucas Martins</div></td><td>12/03</td><td><span class="pill ok">Matriculado</span></td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'Lucas')">Remover</button></td></tr>
+            </tbody>
+          </table>
+          <div class="aviso-lgpd">🛡️ <div><b>Dado de estudante é sensível.</b> Como pode haver menores de idade, esta lista, os e-mails e as entregas exigem cuidado de LGPD — consentimento no cadastro e acesso restrito ao professor da turma. Tratado como requisito do projeto.</div></div>
+        </div>
+
+        <!-- material -->
+        <div id="t-material" class="painel">
+          <div class="cab"><div><h1>Material</h1><div class="turma">Turma <b>9º ano B</b></div></div><button class="btn" style="width:auto;margin:0;padding:10px 16px" onclick="toast('Abriria o envio de PDF')">＋ Adicionar PDF</button></div>
+          <div class="barra-acao"></div>
+          <table>
+            <thead><tr><th>Arquivo</th><th>Categoria</th><th>Publicado</th><th style="text-align:right">Ação</th></tr></thead>
+            <tbody>
+              <tr><td>Equações do 2º grau — teoria.pdf</td><td>Aula · Matemática</td><td>10/07</td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'o PDF')">Excluir</button></td></tr>
+              <tr><td>Lista 04 — Bhaskara.pdf</td><td>Lição · Matemática</td><td>18/07</td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'o PDF')">Excluir</button></td></tr>
+              <tr><td>Revolução Industrial.pdf</td><td>Aula · História</td><td>15/07</td><td style="text-align:right"><button class="lixo" onclick="excluir(this,'o PDF')">Excluir</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- atividades -->
+        <div id="t-ativ" class="painel">
+          <div class="cab"><div><h1>Atividades</h1><div class="turma">Turma <b>9º ano B</b></div></div><button class="btn" style="width:auto;margin:0;padding:10px 16px" onclick="toast('Abriria a criação de atividade')">＋ Nova atividade</button></div>
+          <div class="secao-tit">Para corrigir</div>
+          <div class="lista">
+            <div class="item"><div class="txt"><h3>Lista 04 — Equações de 2º grau</h3><div class="met">Matemática · <b>18 de 28</b> entregaram · prazo 25/07</div></div><span class="selo pend">5 novas</span><button class="btn" onclick="toast('Abriria as entregas para corrigir')">Corrigir</button></div>
+            <div class="item"><div class="txt"><h3>Interpretação de texto — crônica</h3><div class="met">Português · 26 de 28 entregaram</div></div><span class="selo feito">Quase tudo corrigido</span><button class="btn sec" onclick="toast('Ver entregas')">Ver entregas</button></div>
+          </div>
+        </div>
+
+        <!-- dúvidas -->
+        <div id="t-duvidas" class="painel">
+          <div class="cab"><div><h1>Dúvidas da turma</h1><div class="turma">Você responde, a turma toda vê</div></div></div>
+          <div class="duvida" style="border-color:#f0e2bf">
+            <div class="top"><div class="avatar">LU</div><b>Lucas</b><span class="met">há 1 dia · sem resposta</span></div>
+            <p class="q">Alguém sabe se a prova cobre até o capítulo 8?</p>
+            <div class="caixa-nova" style="margin:8px 0 0;border-style:solid">
+              <textarea placeholder="Escreva a resposta — fica visível para toda a turma">Sim, Lucas, a prova vai até o capítulo 8. Vou postar um resumo no material até quarta.</textarea>
+              <div class="lin"><span></span><button class="btn" onclick="toast('Resposta publicada para a turma')">Responder à turma</button></div>
+            </div>
+          </div>
+          <div class="duvida">
+            <div class="top"><div class="avatar">MA</div><b>Mariana</b><span class="met">respondida há 1 hora</span></div>
+            <p class="q">Na questão 3 da lista, como sei se uso Bhaskara ou fatoração?</p>
+            <div class="resp"><div class="top"><div class="avatar">MB</div><b>Você</b><span class="prof">PROFESSOR</span></div><p>Boa pergunta! Se der pra achar dois números que somam -b e multiplicam c, fatora…</p></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function verLado(l){
+    document.getElementById('lado-aluno').style.display = l==='aluno'?'block':'none';
+    document.getElementById('lado-prof').style.display  = l==='prof'?'block':'none';
+    document.getElementById('tab-aluno').classList.toggle('on', l==='aluno');
+    document.getElementById('tab-prof').classList.toggle('on', l==='prof');
+  }
+  function mostra(escopo, id){
+    escopo.querySelectorAll('.tela').forEach(t=>t.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    window.scrollTo(0,0);
+  }
+  const irAluno = id => mostra(document.getElementById('lado-aluno'), id);
+  const irProf  = id => mostra(document.getElementById('lado-prof'),  id);
+  const entrarApp = () => irAluno('a-app');
+
+  function painel(escopoSel, id, el){
+    const esc = document.querySelector(escopoSel);
+    esc.querySelectorAll('.painel').forEach(p=>p.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    esc.querySelectorAll('.nav a').forEach(a=>a.classList.remove('on'));
+    if(el) el.classList.add('on');
+    window.scrollTo(0,0);
+  }
+  const painelAluno = (id,el) => painel('#a-app', id, el);
+  const painelProf  = (id,el) => painel('#pr-app', id, el);
+
+  function excluir(btn,nome){
+    const tr = btn.closest('tr');
+    tr.style.transition='.3s'; tr.style.opacity='0';
+    setTimeout(()=>tr.remove(),300);
+    toast('Removido: '+nome+' (não entra de novo com o código de hoje)');
+  }
+  function rotacionar(){
+    const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let s=''; for(let i=0;i<4;i++) s+=c[Math.floor(Math.random()*c.length)];
+    document.querySelectorAll('#cod-dia, #lado-prof .cod').forEach(e=>e.textContent=s);
+    toast('Novo código gerado: '+s);
+  }
+  let tmr;
+  function toast(msg){
+    const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+    clearTimeout(tmr); tmr=setTimeout(()=>t.classList.remove('on'),2200);
+  }
+</script>
+</body>
+</html>

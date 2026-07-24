@@ -1,27 +1,11 @@
-# Sistema operacional
-.DS_Store
-Thumbs.db
+# Sobras de tooling — não são entrega de cliente
+easy-install.py
+frappe_docker/
 
-# Editores
-.vscode/
-.idea/
-
-# Claude Code (sessões locais, não devem ir pro repo)
-.claude/projects/
-.claude/sessions/
-.claude/shell-snapshots/
-.claude/telemetry/
-.claude/file-history/
-.claude/backups/
-
-# Dependências
+# Ambiente / segredos
+.env
+.env.local
+**/.env
+**/.env.local
 node_modules/
-
-# Arquivos temporários
-*.log
-*.tmp
-
-# Drop zone do usuário (só o README vai versionado)
-dados/*
-!dados/README.md
-.claude/settings.local.json
+.DS_Store
